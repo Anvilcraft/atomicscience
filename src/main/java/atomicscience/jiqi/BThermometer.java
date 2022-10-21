@@ -16,6 +16,7 @@ public class BThermometer extends BBase {
 
     public BThermometer() {
         super("thermometer");
+        this.textureName = "atomicscience:thermometer";
     }
 
     @Override

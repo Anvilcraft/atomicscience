@@ -19,6 +19,7 @@ public class TThermometer extends TileEntityDisableable {
     public float temp = 0.0F;
     public Vector3 linkedTileCoords;
 
+    @Override
     public void updateEntity() {
         super.updateEntity();
         if (!this.worldObj.isRemote) {
@@ -83,12 +84,14 @@ public class TThermometer extends TileEntityDisableable {
         }
     }
 
+    @Override
     public void readFromNBT(NBTTagCompound nbt) {
         super.readFromNBT(nbt);
         this.warningTemp = nbt.getInteger("warningTemp");
         this.linkedTileCoords = Vector3.readFromNBT(nbt.getCompoundTag("linkedTileCoords"));
     }
 
+    @Override
     public void writeToNBT(NBTTagCompound nbt) {
         super.writeToNBT(nbt);
         nbt.setInteger("warningTemp", this.warningTemp);

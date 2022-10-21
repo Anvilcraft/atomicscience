@@ -6,10 +6,10 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.StatCollector;
 import universalelectricity.core.electricity.ElectricityDisplay;
 
-public class GChemicalReactor extends GBase {
+public class GChemicalExtractor extends GBase {
   private TChemicalExtractor tileEntity;
 
-  public GChemicalReactor(InventoryPlayer par1InventoryPlayer,
+  public GChemicalExtractor(InventoryPlayer par1InventoryPlayer,
                  TChemicalExtractor tileEntity) {
     super(new CChemicalExtractor(par1InventoryPlayer, tileEntity));
     this.tileEntity = tileEntity;

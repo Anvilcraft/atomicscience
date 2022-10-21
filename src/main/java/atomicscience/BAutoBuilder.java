@@ -6,10 +6,9 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
 public class BAutoBuilder extends BBase {
-   public static final int BAN_JING = 30;
-
    public BAutoBuilder() {
       super("instantBuilder");
+      this.textureName = "atomicscience:instantBuilder";
    }
 
    @Override

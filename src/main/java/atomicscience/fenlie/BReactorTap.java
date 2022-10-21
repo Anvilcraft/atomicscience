@@ -1,11 +1,9 @@
 package atomicscience.fenlie;
 
-import atomicscience.fenlie.TReactorTap;
 import atomicscience.jiqi.BBaseRotatable;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -50,7 +48,12 @@ public class BReactorTap extends BBaseRotatable {
     super.registerBlockIcons(iconRegister);
     this.frontIcon = iconRegister.registerIcon(
         this.getUnlocalizedName().replace("tile.", "") + "_front");
+    this.blockIcon = iconRegister.registerIcon(
+        this.getUnlocalizedName().replace("tile.", ""));
   }
 
-  public TileEntity createNewTileEntity(World world, int meta) { return new TReactorTap(); }
+  @Override
+  public TileEntity createNewTileEntity(World world, int meta) {
+    return new TReactorTap();
+  }
 }

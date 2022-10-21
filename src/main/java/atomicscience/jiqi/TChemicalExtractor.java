@@ -207,6 +207,7 @@ public class TChemicalExtractor
         return 4;
     }
 
+   @Override
     public boolean isItemValidForSlot(int slotID, ItemStack itemStack) {
         return slotID == 1
                 ? AtomicScience.isCellWater(itemStack)
@@ -215,14 +216,17 @@ public class TChemicalExtractor
                                 AtomicScience.isUraniumOre(itemStack));
     }
 
+   @Override
     public int[] getAccessibleSlotsFromSide(int side) {
         return new int[] { 1, 2, 3 };
     }
 
+   @Override
     public boolean canInsertItem(int slotID, ItemStack itemStack, int side) {
         return this.isItemValidForSlot(slotID, itemStack);
     }
 
+   @Override
     public boolean canExtractItem(int slotID, ItemStack itemstack, int side) {
         return slotID == 2;
     }

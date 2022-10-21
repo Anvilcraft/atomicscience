@@ -1,6 +1,7 @@
 package atomicscience.fanwusu;
 
 import atomicscience.AtomicScience;
+import atomicscience.SoundManager;
 import atomicscience.api.poison.PoisonRadiation;
 import atomicscience.wujian.ItCell;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
@@ -77,7 +78,7 @@ public class ItAntimatterCell extends ItCell {
             if (itemStack != null && itemStack.getItem() == this) {
                 event.entityItem.worldObj.playSoundEffect(
                         event.entityItem.posX, event.entityItem.posY, event.entityItem.posZ,
-                        "atomicscience.antimatter", 3.0F,
+                        SoundManager.ANTIMATTER, 3.0F,
                         1.0F - event.entityItem.worldObj.rand.nextFloat() * 0.3F);
                 if (!event.entityItem.worldObj.isRemote
                 // &&

@@ -14,6 +14,7 @@ public class ItBreederFuel extends ItRadioactive implements IFissileMaterial {
       this.setMaxDamage('\u9c40');
       this.setMaxStackSize(1);
       this.setNoRepair();
+      this.setTextureName("atomicscience:rodBreederFuel");
    }
 
    public int onFissile(ITemperature reactor) {

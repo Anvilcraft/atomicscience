@@ -159,6 +159,7 @@ public class TNuclearBoiler
         }
     }
 
+    @Override
     public void readFromNBT(NBTTagCompound nbt) {
         super.readFromNBT(nbt);
         this.smeltingTicks = nbt.getInteger("smeltingTicks");

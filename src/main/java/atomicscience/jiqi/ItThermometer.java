@@ -17,6 +17,7 @@ public class ItThermometer extends ItElectricAS {
 
     public ItThermometer(int texture) {
         super("thermometer");
+        this.setTextureName("atomicscience:thermometer");
     }
 
     @Override

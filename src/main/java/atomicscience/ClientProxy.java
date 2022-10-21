@@ -23,7 +23,7 @@ import atomicscience.shimian.GAccelerator;
 import atomicscience.shimian.GAtomicAssembler;
 import atomicscience.shimian.GAutoBuilder;
 import atomicscience.shimian.GCentrifuge;
-import atomicscience.shimian.GChemicalReactor;
+import atomicscience.shimian.GChemicalExtractor;
 import atomicscience.shimian.GFissionReactor;
 import atomicscience.shimian.GNuclearBoiler;
 import cpw.mods.fml.client.registry.ClientRegistry;
@@ -42,6 +42,7 @@ public class ClientProxy extends CommonProxy {
     return RenderingRegistry.addNewArmourRendererPrefix(armor);
   }
 
+  @Override
   public void init() {
     super.init();
     ClientRegistry.bindTileEntitySpecialRenderer(TCentrifuge.class,
@@ -64,6 +65,7 @@ public class ClientProxy extends CommonProxy {
                                                      new RMatter());
   }
 
+  @Override
   public Object getClientGuiElement(int ID, EntityPlayer player, World world,
                                     int x, int y, int z) {
     TileEntity tileEntity = world.getTileEntity(x, y, z);
@@ -77,7 +79,7 @@ public class ClientProxy extends CommonProxy {
       }
 
       if (tileEntity instanceof TChemicalExtractor) {
-        return new GChemicalReactor(player.inventory,
+        return new GChemicalExtractor(player.inventory,
                                     (TChemicalExtractor)tileEntity);
       }
 

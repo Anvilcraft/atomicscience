@@ -9,6 +9,7 @@ import java.util.Random;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 
@@ -38,6 +39,11 @@ public class BUraniumOre extends BlockRadioactive {
    @Override
    public IIcon getIcon(int side, int metadata) {
       return this.blockIcon;
+   }
+
+   @Override
+   public void registerBlockIcons(IIconRegister iconRegister) {
+       this.blockIcon = iconRegister.registerIcon("atomicscience:oreUranium");
    }
 
    @Override

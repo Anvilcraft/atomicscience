@@ -25,6 +25,7 @@ public class ItFissileFuel extends ItRadioactive implements IFissileMaterial {
     this.setMaxDamage('\uc350');
     this.setMaxStackSize(1);
     this.setNoRepair();
+    this.setTextureName("atomicscience:rodFissileFuel");
   }
 
   @Override

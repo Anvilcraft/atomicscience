@@ -159,6 +159,9 @@ public class TFissionReactor extends TileEntityDisableable
                 this.wasteTank.getFluidAmount() > this.wasteTank.getCapacity();
     }
 
+
+    // TODO: WTF
+    //@Override
     public void updatePositionStatus() {
         boolean top = (new Vector3(this))
                 .add(new Vector3(0.0D, 1.0D, 0.0D))
@@ -235,6 +238,7 @@ public class TFissionReactor extends TileEntityDisableable
         this.readFromNBT(packet.func_148857_g());
     }
 
+    @Override
     public void readFromNBT(NBTTagCompound nbt) {
         super.readFromNBT(nbt);
         this.wenDu = nbt.getFloat("temperature");

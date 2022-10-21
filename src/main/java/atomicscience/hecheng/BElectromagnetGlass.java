@@ -12,6 +12,7 @@ import net.minecraft.world.World;
 public class BElectromagnetGlass extends BBase implements IElectromagnet {
     public BElectromagnetGlass() {
         super("electromagnetGlass", Material.glass);
+        this.textureName = "atomicscience:electromagnetGlass";
     }
 
     @Override

@@ -11,8 +11,6 @@ import universalelectricity.core.item.IItemElectric;
 import universalelectricity.prefab.SlotSpecific;
 
 public class CCentrifuge extends Container {
-
-   //private static final int slotCount = 4;
    private TCentrifuge tileEntity;
 
 

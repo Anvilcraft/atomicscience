@@ -61,6 +61,7 @@ import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.network.NetworkRegistry;
+import cpw.mods.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import cpw.mods.fml.common.registry.EntityRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
@@ -113,20 +114,7 @@ public class AtomicScience {
               serverSide = "atomicscience.CommonProxy")
   public static CommonProxy proxy;
   @Metadata("AtomicScience") public static ModMetadata metadata;
-  public static final String WEN_JIAN_NO_SLASH = "atomicscience/";
-  public static final String WEN_JIAN = "/atomicscience/";
-  public static final String DIR = "/mods/atomicscience/";
-  public static final String TEXTURE_WEN_JIAN = "/mods/atomicscience/textures/";
-  public static final String SHI_MIAN_WEN_JIAN =
-      "/mods/atomicscience/textures/gui/";
-  public static final String BLOCK_WEN_JIAN =
-      "/mods/atomicscience/textures/blocks/";
-  public static final String ITEM_WEN_JIAN =
-      "/mods/atomicscience/textures/items/";
-  public static final String MODEL_WEN_JIAN =
-      "/mods/atomicscience/textures/models/";
-  // private static final String YU_YAN_WEN_JIAN = "/mods/atomicscience/yuyan/";
-  private static final String[] YU_YAN = new String[] {"en_US"};
+  private static final String[] LANGUAGES = new String[] {"en_US"};
   public static float WOLUN_MULTIPLIER_OUTPUT = 30.0F;
   public static boolean ALLOW_LAYERED_TURBINES = true;
   public static boolean ALLOW_TOXIC_WASTE = true;
@@ -164,7 +152,7 @@ public class AtomicScience {
   public static Block bUraniumOre;
   public static Item itYellowcake;
   public static Item itUranium;
-  public static ItemElectric itWenDuBiao;
+  public static ItemElectric itThermometer;
   public static Item itHazmatHelmet;
   public static Item itHazmatChestplate;
   public static Item itHazmanLeggings;
@@ -181,6 +169,8 @@ public class AtomicScience {
   // public static final String QIZI_FAN_WU_SU_BAO_ZHA =
   // FlagRegistry.registerFlag("ban_antimatter_power");
   public static final Logger LOGGER = Logger.getLogger("AtomicScience");
+
+  public static SimpleNetworkWrapper channel;
 
   @EventHandler
   public void preInit(FMLPreInitializationEvent event) {
@@ -252,7 +242,7 @@ public class AtomicScience {
     itHazmatBoots = (new ItHazmatSuite(hazmatArmorMaterial,
                                        proxy.getArmorIndex("hazmat"), 3))
                         .setUnlocalizedName("atomicscience:hazmatBoots");
-    itWenDuBiao = new ItThermometer(1);
+    itThermometer = new ItThermometer(1);
     itCell = new ItCell("cellEmpty");
     itCellUranium = new ItFissileFuel();
     itCellDeuterium = new ItCell("cellDeuterium");
@@ -260,7 +250,8 @@ public class AtomicScience {
     itCellAntimatter = new ItAntimatterCell();
     itCellWater = new ItCell("cellWater");
     itCellBreederFuel = new ItBreederFuel();
-    itYellowcake = new ItRadioactive("yellowcake");
+    itYellowcake = new ItRadioactive("yellowcake")
+                       .setTextureName("atomicscience:yellowcake");
     itUranium = new ItUranium(0);
     FLUID_URANIUM_HEXAFLOURIDE = getOrRegisterFluid("uranium_hexafluoride");
     FLUID_STEAM = getOrRegisterFluid("steam");
@@ -270,11 +261,29 @@ public class AtomicScience {
     itBucketToxic = (new ItemBucket(bToxicWaste))
                         .setCreativeTab(TabAS.INSTANCE)
                         .setUnlocalizedName("atomicscience:bucketToxicWaste")
+                        .setTextureName("atomicscience:bucketToxicWaste")
                         .setContainerItem(Items.bucket);
     FluidContainerRegistry.registerFluidContainer(new FluidContainerData(
         new FluidStack(FLUID_TOXIC_WASTE, 1000), new ItemStack(itBucketToxic),
         new ItemStack(Items.bucket)));
     NetworkRegistry.INSTANCE.registerGuiHandler(this, proxy);
+
+    GameRegistry.registerItem(itCell, "itCell");
+    GameRegistry.registerItem(itCellUranium, "itCellUranium");
+    GameRegistry.registerItem(itCellBreederFuel, "itCellBreederFuel");
+    GameRegistry.registerItem(itCellStrangeMatter, "itCellStrangeMatter");
+    GameRegistry.registerItem(itCellAntimatter, "itCellAntimatter");
+    GameRegistry.registerItem(itCellDeuterium, "itCellDeuterium");
+    GameRegistry.registerItem(itCellWater, "itCellWater");
+    GameRegistry.registerItem(itBucketToxic, "itBucketToxic");
+    GameRegistry.registerItem(itYellowcake, "itYellowcake");
+    GameRegistry.registerItem(itUranium, "itUranium");
+    GameRegistry.registerItem(itThermometer, "itThermometer");
+    GameRegistry.registerItem(itHazmatHelmet, "itHazmatHelmet");
+    GameRegistry.registerItem(itHazmatChestplate, "itHazmatChestplate");
+    GameRegistry.registerItem(itHazmanLeggings, "itHazmanLeggings");
+    GameRegistry.registerItem(itHazmatBoots, "itHazmatBoots");
+
     GameRegistry.registerBlock(blockRadioactive, "blockRadioactive");
     GameRegistry.registerBlock(bUraniumOre, "bUraniumOre");
     GameRegistry.registerBlock(bCentrifuge, "bCentrifuge");
@@ -358,6 +367,10 @@ public class AtomicScience {
     GameRegistry.registerTileEntity(TFissionReactor.class, "ASFissionReactor");
     GameRegistry.registerTileEntity(TReactorTap.class, "ASReactorTap");
     proxy.preInit();
+
+    channel = NetworkRegistry.INSTANCE.newSimpleChannel("AtomicScience");
+    channel.registerMessage(PHAutoBuilder.class, PAutoBuilder.class, 0,
+                            Side.SERVER);
   }
 
   @EventHandler
@@ -372,9 +385,11 @@ public class AtomicScience {
     metadata.authorList = Arrays.asList(new String[] {"Calclavia"});
     metadata.credits = "Please visit the website.";
     metadata.autogenerated = false;
-    LOGGER.fine(
-        "Loaded Languages: " +
-        TranslationHelper.loadLanguages("/mods/atomicscience/yuyan/", YU_YAN));
+    LOGGER.fine("Loaded Languages: " +
+                TranslationHelper.loadLanguages("/assets/atomicscience/lang/",
+                                                LANGUAGES));
+
+    proxy.init();
   }
 
   @EventHandler
@@ -461,7 +476,7 @@ public class AtomicScience {
     GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(itCellWater),
                                                   itCell, Items.water_bucket));
     GameRegistry.addRecipe(new ShapedOreRecipe(
-        ElectricItemHelper.getUncharged(new ItemStack(itWenDuBiao)),
+        ElectricItemHelper.getUncharged(new ItemStack(itThermometer)),
         new Object[] {"SSS", "GCG", "GSG", Character.valueOf('S'), "ingotSteel",
                       Character.valueOf('G'), Blocks.glass,
                       Character.valueOf('C'), "calclavia:CIRCUIT_T1"}));
@@ -469,7 +484,7 @@ public class AtomicScience {
         bThermometer, new Object[] {"SSS", "SWS", "SSS", Character.valueOf('S'),
                                     "ingotSteel", Character.valueOf('W'),
                                     ElectricItemHelper.getUncharged(
-                                        new ItemStack(itWenDuBiao))}));
+                                        new ItemStack(itThermometer))}));
     GameRegistry.addRecipe(new ShapedOreRecipe(
         bControlRod, new Object[] {"I", "I", "I", Character.valueOf('I'),
                                    Items.iron_ingot}));
@@ -518,7 +533,6 @@ public class AtomicScience {
         EMatter.class, "ASParticle", EntityRegistry.findGlobalUniqueEntityId());
     EntityRegistry.registerModEntity(EMatter.class, "ASParticle", 49, this, 80,
                                      3, true);
-    proxy.init();
     AtomicScience.CONFIGURATION.load();
     if (Loader.isModLoaded("IC2") &&
         AtomicScience.CONFIGURATION

@@ -4,8 +4,6 @@ import atomicscience.TabAS;
 import atomicscience.wujian.ItCell;
 
 public class ItStrangeMatter extends ItCell {
-   public static final int YONG_LIANG = 64;
-
    public ItStrangeMatter() {
       super("strangeMatter");
       this.setMaxStackSize(1);

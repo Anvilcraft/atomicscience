@@ -1,6 +1,7 @@
 package atomicscience.fanwusu;
 
 import atomicscience.AtomicScience;
+import atomicscience.SoundManager;
 import atomicscience.api.IElectromagnet;
 import atomicscience.api.poison.PoisonRadiation;
 import cpw.mods.fml.common.registry.IEntityAdditionalSpawnData;
@@ -80,7 +81,7 @@ public class EMatter extends Entity implements IEntityAdditionalSpawnData {
   public void onUpdate() {
     if (super.ticksExisted % 10 == 0) {
       super.worldObj.playSoundAtEntity(
-          this, "atomicscience.accelerator", 1.5F,
+          this, SoundManager.ACCELERATOR, 1.5F,
           (float)(0.6000000238418579D + 0.4D * (this.getSuDu() / 1.0D)));
     }
 

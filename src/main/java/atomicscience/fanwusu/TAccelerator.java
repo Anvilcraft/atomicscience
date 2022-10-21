@@ -1,6 +1,7 @@
 package atomicscience.fanwusu;
 
 import atomicscience.AtomicScience;
+import atomicscience.SoundManager;
 import atomicscience.jiqi.TInventory;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
@@ -108,7 +109,7 @@ public class TAccelerator
             } else if (this.suDu > 1.0F) {
               this.worldObj.playSoundEffect(
                   (double)this.xCoord, (double)this.yCoord, (double)this.zCoord,
-                  "atomicscience.antimatter", 2.0F,
+                  SoundManager.ANTIMATTER, 2.0F,
                   1.0F - this.worldObj.rand.nextFloat() * 0.3F);
               this.antimatter += 5 + this.worldObj.rand.nextInt(5);
               this.yongDianLiang = 0.0D;
