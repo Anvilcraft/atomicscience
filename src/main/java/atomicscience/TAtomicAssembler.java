@@ -138,7 +138,7 @@ public class TAtomicAssembler extends TInventory {
 
   public void work() {
     if (this.canWork()) {
-      for (int i = 0; i < 5; ++i) {
+      for (int i = 0; i <= 5; ++i) {
         if (super.containingItems[i] != null) {
           super.containingItems[i].setItemDamage(
               super.containingItems[i].getItemDamage() + 1);

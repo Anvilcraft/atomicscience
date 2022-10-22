@@ -140,6 +140,7 @@ public class AtomicScience {
   public static Block bAtomicAssembler;
   public static Block bFissionReactor;
   public static Block bReactorTap;
+  public static Block bSuperConductor;
   public static final int ITEM_ID_PREFIX = 13768;
   public static Item itCell;
   public static Item itCellUranium;
@@ -228,6 +229,7 @@ public class AtomicScience {
     bFulminationGenerator = new BFulminationGenerator();
     bAtomicAssembler = new BAtomicAssembler();
     bReactorTap = new BReactorTap();
+    bSuperConductor = new BSuperconductor();
     itHazmatHelmet =
         (new ItHazmatSuite(
 
@@ -306,6 +308,7 @@ public class AtomicScience {
     GameRegistry.registerBlock(bAtomicAssembler, "bAtomicAssembler");
     GameRegistry.registerBlock(bToxicWaste, "bToxicWaste");
     GameRegistry.registerBlock(bReactorTap, "bReactorTap");
+    GameRegistry.registerBlock(bSuperConductor, "bSuperConductor");
     uraniumOreGeneration = new OreGenReplaceStone("Uranium Ore", "oreUranium",
                                                   new ItemStack(bUraniumOre), 0,
                                                   25, 9, 3, "pickaxe", 2);
@@ -366,6 +369,7 @@ public class AtomicScience {
     GameRegistry.registerTileEntity(TAutoBuilder.class, "ASAutoBuilder");
     GameRegistry.registerTileEntity(TFissionReactor.class, "ASFissionReactor");
     GameRegistry.registerTileEntity(TReactorTap.class, "ASReactorTap");
+    GameRegistry.registerTileEntity(TSuperconductor.class, "ASSuperconductor");
     proxy.preInit();
 
     channel = NetworkRegistry.INSTANCE.newSimpleChannel("AtomicScience");

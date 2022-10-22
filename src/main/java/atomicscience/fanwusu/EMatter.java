@@ -6,7 +6,6 @@ import atomicscience.api.IElectromagnet;
 import atomicscience.api.poison.PoisonRadiation;
 import cpw.mods.fml.common.registry.IEntityAdditionalSpawnData;
 import io.netty.buffer.ByteBuf;
-
 import java.util.List;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
@@ -47,7 +46,7 @@ public class EMatter extends Entity implements IEntityAdditionalSpawnData {
   }
 
   public EMatter(World par1World, Vector3 diDian, Vector3 jiQi,
-               ForgeDirection direction) {
+                 ForgeDirection direction) {
     this(par1World);
     this.setPosition(diDian.x, diDian.y, diDian.z);
     this.jiQi = jiQi;
@@ -139,7 +138,7 @@ public class EMatter extends Entity implements IEntityAdditionalSpawnData {
       }
 
       --this.lastTurn;
-      if (canCunZai(super.worldObj, new Vector3(this), this.fangXiang) &&
+      if (canExist(super.worldObj, new Vector3(this), this.fangXiang) &&
           !super.isCollided) {
         Vector3 dongLi = new Vector3();
         dongLi.modifyPositionFromSide(this.fangXiang);
@@ -274,14 +273,16 @@ public class EMatter extends Entity implements IEntityAdditionalSpawnData {
         Math.abs(super.motionZ);
   }
 
-  public static boolean canCunZai(World worldObj, Vector3 position,
-                                  ForgeDirection facing) {
+  public static boolean canExist(World worldObj, Vector3 position,
+                                 ForgeDirection facing) {
     if (position.getBlock(worldObj) != Blocks.air) {
+      AtomicScience.LOGGER.info("block not air " + position);
       return false;
     } else {
       for (int i = 0; i <= 1; ++i) {
         ForgeDirection dir = ForgeDirection.getOrientation(i);
         if (!isElectromagnet(worldObj, position, dir)) {
+          AtomicScience.LOGGER.info("not alectromagnet " + position);
           return false;
         }
       }

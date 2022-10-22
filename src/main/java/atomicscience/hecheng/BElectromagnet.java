@@ -1,7 +1,6 @@
 package atomicscience.hecheng;
 
 import atomicscience.api.IElectromagnet;
-import atomicscience.hecheng.TElectromagnet;
 import atomicscience.jiqi.BBase;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;

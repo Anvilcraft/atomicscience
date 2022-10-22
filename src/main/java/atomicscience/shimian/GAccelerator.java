@@ -34,7 +34,7 @@ public class GAccelerator extends GuiContainer {
             .getOpposite());
     if (this.tileEntity.isDisabled()) {
       status = "Disabled";
-    } else if (!EMatter.canCunZai(
+    } else if (!EMatter.canExist(
                    this.tileEntity.getWorldObj(), position,
                    this.tileEntity
                        .getDirection(this.tileEntity.getWorldObj(),

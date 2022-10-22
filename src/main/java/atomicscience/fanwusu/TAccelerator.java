@@ -89,7 +89,7 @@ public class TAccelerator
                                       this.zCoord)
                         .getOpposite());
                 i$1.add(0.5D);
-                if (EMatter.canCunZai(
+                if (EMatter.canExist(
                         this.worldObj, i$1,
                         this.getDirection(this.worldObj, this.xCoord,
                                           this.yCoord, this.zCoord)
