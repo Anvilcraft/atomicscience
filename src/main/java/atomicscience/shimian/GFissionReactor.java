@@ -52,7 +52,7 @@ public class GFissionReactor extends GuiContainerBase {
 
   @Override
   protected void drawGuiContainerBackgroundLayer(float par1, int x, int y) {
-    //super.drawGuiContainerBackgroundLayer(par1, x, y);
+    super.drawGuiContainerBackgroundLayer(par1, x, y);
     this.drawSlot(78, 20);
     if (this.tileEntity.wasteTank.getFluid() != null) {
       int toxicity1 = this.tileEntity.wasteTank.getFluidAmount();

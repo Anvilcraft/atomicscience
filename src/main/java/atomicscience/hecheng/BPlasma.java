@@ -2,7 +2,7 @@ package atomicscience.hecheng;
 
 import atomicscience.api.IElectromagnet;
 import atomicscience.api.Plasma;
-import atomicscience.hecheng.TElectromagnet;
+import atomicscience.hecheng.TElectromagnetBoiler;
 import atomicscience.jiqi.BBase;
 import java.util.Random;
 import net.minecraft.block.Block;
@@ -50,9 +50,9 @@ public class BPlasma extends BBase implements Plasma.IPlasma {
                         }
                     } else {
                         TileEntity var10 = zhaoDiDian.getTileEntity(worldObj);
-                        if (var10 instanceof TElectromagnet) {
-                            ((TElectromagnet) var10)
-                                    .setTemperature(((TElectromagnet) var10).getTemperature() + 100.0F);
+                        if (var10 instanceof TElectromagnetBoiler) {
+                            ((TElectromagnetBoiler) var10)
+                                    .setTemperature(((TElectromagnetBoiler) var10).getTemperature() + 100.0F);
                         }
                     }
                 }

@@ -27,13 +27,14 @@ import atomicscience.fenlie.TFissionReactor;
 import atomicscience.fenlie.TNuclearBoiler;
 import atomicscience.fenlie.TReactorTap;
 import atomicscience.hecheng.BElectromagnet;
+import atomicscience.hecheng.BElectromagnetBoiler;
 import atomicscience.hecheng.BElectromagnetGlass;
 import atomicscience.hecheng.BFusionReactor;
 import atomicscience.hecheng.BPlasma;
 import atomicscience.hecheng.IBAccelerator;
 import atomicscience.hecheng.IBPlasma;
 import atomicscience.hecheng.IBSiren;
-import atomicscience.hecheng.TElectromagnet;
+import atomicscience.hecheng.TElectromagnetBoiler;
 import atomicscience.hecheng.TFusionReactor;
 import atomicscience.jiqi.BChemicalExtractor;
 import atomicscience.jiqi.BFunnel;
@@ -130,6 +131,7 @@ public class AtomicScience {
   public static Block bFusionReactor;
   public static BPlasma bPlasma;
   public static Block bElectromagnet;
+  public static Block bElectromagnetBoiler;
   public static Block bChemicalExtractor;
   public static Block bSiren;
   public static Block bElectromagnetGlass;
@@ -219,7 +221,8 @@ public class AtomicScience {
     bThermometer = new BThermometer();
     bFusionReactor = new BFusionReactor();
     bPlasma = new BPlasma();
-    bElectromagnet = new BElectromagnet();
+    bElectromagnet= new BElectromagnet();
+    bElectromagnetBoiler = new BElectromagnetBoiler();
     bChemicalExtractor = new BChemicalExtractor();
     bSiren = new BSiren();
     bElectromagnetGlass = new BElectromagnetGlass();
@@ -297,6 +300,7 @@ public class AtomicScience {
     GameRegistry.registerBlock(bFusionReactor, "bFusionReactor");
     GameRegistry.registerBlock(bPlasma, IBPlasma.class, "bPlasma");
     GameRegistry.registerBlock(bElectromagnet, "bElectromagnet");
+    GameRegistry.registerBlock(bElectromagnetBoiler, "bElectromagnetBoiler");
     GameRegistry.registerBlock(bChemicalExtractor, "bChemicalExtractor");
     GameRegistry.registerBlock(bSiren, IBSiren.class, "bSiren");
     GameRegistry.registerBlock(bElectromagnetGlass, "bElectromagnetGlass");
@@ -328,8 +332,7 @@ public class AtomicScience {
     AtomicScience.CONFIGURATION.save();
     MinecraftForge.EVENT_BUS.register(itCellAntimatter);
     MinecraftForge.EVENT_BUS.register(FulminationEventHandler.INSTANCE);
-    OreDictionary.registerOre("ingotUranium", itUranium);
-    OreDictionary.registerOre("breederUranium", new ItemStack(itUranium, 1, 1));
+    OreDictionary.registerOre("breederUranium", itUranium);
     OreDictionary.registerOre("blockRadioactive", blockRadioactive);
     OreDictionary.registerOre("cellEmpty", itCell);
     OreDictionary.registerOre("cellUranium", itCellUranium);
@@ -357,7 +360,7 @@ public class AtomicScience {
     GameRegistry.registerTileEntity(TTurbine.class, "ASTurbine");
     GameRegistry.registerTileEntity(TNuclearBoiler.class, "ASNuclearBoiler");
     GameRegistry.registerTileEntity(TThermometer.class, "ASThermometer");
-    GameRegistry.registerTileEntity(TElectromagnet.class, "ASElectromagnet");
+    GameRegistry.registerTileEntity(TElectromagnetBoiler.class, "ASElectromagnetBoiler");
     GameRegistry.registerTileEntity(TChemicalExtractor.class,
                                     "ASChemicalExtractor");
     GameRegistry.registerTileEntity(TFunnel.class, "ASFunnel");
@@ -399,140 +402,8 @@ public class AtomicScience {
   @EventHandler
   public void postInit(FMLPostInitializationEvent event) {
     UniversalRecipes.init();
-    if (Loader.isModLoaded("IC2")) {
-      OreDictionary.registerOre("cellEmpty", itCell);
-      GameRegistry.addRecipe(new ShapelessOreRecipe(
-          itYellowcake, GameRegistry.findItem("IC2", "reactorUraniumSimple")));
-      Item ic2FluidCell = GameRegistry.findItem("IC2", "itemFluidCell");
-      GameRegistry.addRecipe(new ShapelessOreRecipe(ic2FluidCell, itCell));
-      GameRegistry.addRecipe(new ShapelessOreRecipe(itCell, "cellEmpty"));
-    }
+    Recipes.addRecipes();
 
-    GameRegistry.addRecipe(new ShapelessOreRecipe(
-        new ItemStack(itCellAntimatter, 1, 1), itCellAntimatter,
-        itCellAntimatter, itCellAntimatter, itCellAntimatter, itCellAntimatter,
-        itCellAntimatter, itCellAntimatter, itCellAntimatter));
-    GameRegistry.addRecipe(new ShapelessOreRecipe(
-        new ItemStack(itCellAntimatter, 8, 0),
-        new Object[] {new ItemStack(itCellAntimatter, 1, 1)}));
-    GameRegistry.addRecipe(new ShapedOreRecipe(
-        new ItemStack(bFunnel, 2), " B ", "B B", "B B", 'B', "ingotBronze"));
-    GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(bFunnel, 2), " B ",
-                                               "B B", "B B", 'B', "ingotIron"));
-    GameRegistry.addRecipe(new ShapedOreRecipe(
-        bAtomicAssembler, "CCC", "SXS", "SSS", 'X', bCentrifuge, 'C',
-        "calclavia:CIRCUIT_T3", 'S', "plateSteel"));
-    GameRegistry.addRecipe(new ShapedOreRecipe(
-        bFulminationGenerator, "OSO", "SCS", "OSO", 'O', Blocks.obsidian, 'C',
-        "calclavia:CIRCUIT_T2", 'S', "plateSteel"));
-    GameRegistry.addRecipe(new ShapedOreRecipe(
-        bAccelerator, "SCS", "CMC", "SCS", 'M', "calclavia:MOTOR", 'C',
-        "calclavia:CIRCUIT_T3", 'S', "plateSteel"));
-    GameRegistry.addRecipe(new ShapelessOreRecipe(
-        bElectromagnetGlass, new Object[] {bElectromagnet, Blocks.glass}));
-    GameRegistry.addRecipe(new ShapedOreRecipe(
-        bCentrifuge,
-        new Object[] {"BSB", "MCM", "BSB", Character.valueOf('C'),
-                      "calclavia:CIRCUIT_T2", Character.valueOf('S'),
-                      "plateSteel", Character.valueOf('B'), "ingotBronze",
-                      Character.valueOf('M'), "calclavia:MOTOR"}));
-    GameRegistry.addRecipe(new ShapedOreRecipe(
-        bNuclearBoiler,
-        new Object[] {"S S", "FBF", "SMS", Character.valueOf('F'),
-                      Blocks.furnace, Character.valueOf('S'), "plateSteel",
-                      Character.valueOf('B'), Items.bucket,
-                      Character.valueOf('M'), "calclavia:MOTOR"}));
-    GameRegistry.addRecipe(new ShapedOreRecipe(
-        bChemicalExtractor,
-        new Object[] {"BSB", "MCM", "BSB", Character.valueOf('C'),
-                      "calclavia:CIRCUIT_T3", Character.valueOf('S'),
-                      "plateSteel", Character.valueOf('B'), "ingotBronze",
-                      Character.valueOf('M'), "calclavia:MOTOR"}));
-    GameRegistry.addRecipe(new ShapedOreRecipe(
-        new ItemStack(bSiren, 2),
-        new Object[] {"NPN", Character.valueOf('N'), Blocks.noteblock,
-                      Character.valueOf('P'), "plateBronze"}));
-    GameRegistry.addRecipe(new ShapedOreRecipe(
-        bFissionReactor,
-        new Object[] {"SCS", "MEM", "SCS", Character.valueOf('E'), "cellEmpty",
-                      Character.valueOf('C'), "calclavia:CIRCUIT_T2",
-                      Character.valueOf('S'), "plateSteel",
-                      Character.valueOf('M'), "calclavia:MOTOR"}));
-    GameRegistry.addRecipe(new ShapedOreRecipe(
-        bFusionReactor,
-        new Object[] {"CPC", "PFP", "CPC", Character.valueOf('P'), "plateSteel",
-                      Character.valueOf('F'), bFissionReactor,
-                      Character.valueOf('C'), "calclavia:CIRCUIT_T3"}));
-    GameRegistry.addRecipe(new ShapedOreRecipe(
-        bTurbine, new Object[] {" B ", "BMB", " B ", Character.valueOf('B'),
-                                "plateBronze", Character.valueOf('M'),
-                                "calclavia:MOTOR"}));
-    GameRegistry.addRecipe(new ShapedOreRecipe(
-        bReactorTap,
-        new Object[] {"SBS", "TMT", "SBS", Character.valueOf('S'),
-                      "plateBronze", Character.valueOf('T'), "ingotBronze",
-                      Character.valueOf('M'), "calclavia:MOTOR",
-                      Character.valueOf('B'), Items.bucket}));
-    GameRegistry.addRecipe(new ShapedOreRecipe(
-        new ItemStack(itCell, 16),
-        new Object[] {" T ", "TGT", " T ", Character.valueOf('T'), "ingotTin",
-                      Character.valueOf('G'), Blocks.glass}));
-    GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(itCellWater),
-                                                  itCell, Items.water_bucket));
-    GameRegistry.addRecipe(new ShapedOreRecipe(
-        ElectricItemHelper.getUncharged(new ItemStack(itThermometer)),
-        new Object[] {"SSS", "GCG", "GSG", Character.valueOf('S'), "ingotSteel",
-                      Character.valueOf('G'), Blocks.glass,
-                      Character.valueOf('C'), "calclavia:CIRCUIT_T1"}));
-    GameRegistry.addRecipe(new ShapedOreRecipe(
-        bThermometer, new Object[] {"SSS", "SWS", "SSS", Character.valueOf('S'),
-                                    "ingotSteel", Character.valueOf('W'),
-                                    ElectricItemHelper.getUncharged(
-                                        new ItemStack(itThermometer))}));
-    GameRegistry.addRecipe(new ShapedOreRecipe(
-        bControlRod, new Object[] {"I", "I", "I", Character.valueOf('I'),
-                                   Items.iron_ingot}));
-    GameRegistry.addRecipe(new ShapedOreRecipe(
-        itCellUranium,
-        new Object[] {"CUC", "CUC", "CUC", Character.valueOf('U'),
-                      "ingotUranium", Character.valueOf('C'), "cellEmpty"}));
-    GameRegistry.addRecipe(new ShapedOreRecipe(
-        itCellBreederFuel,
-        new Object[] {"CUC", "CUC", "CUC", Character.valueOf('U'),
-                      "breederUranium", Character.valueOf('C'), "cellEmpty"}));
-    GameRegistry.addRecipe(new ShapedOreRecipe(
-        new ItemStack(bElectromagnet, 2),
-        new Object[] {"BBB", "BMB", "BBB", Character.valueOf('B'),
-                      "ingotBronze", Character.valueOf('M'),
-                      "calclavia:MOTOR"}));
-    GameRegistry.addRecipe(new ShapedOreRecipe(
-        new ItemStack(bElectromagnet, 2),
-        new Object[] {"BBB", "BMB", "BBB", Character.valueOf('B'), "ingotIron",
-                      Character.valueOf('M'), "calclavia:MOTOR"}));
-    GameRegistry.addRecipe(new ShapedOreRecipe(
-        itHazmatHelmet,
-        new Object[] {"SSS", "BAB", "SCS", Character.valueOf('A'),
-                      Items.leather_helmet, Character.valueOf('C'),
-                      "calclavia:CIRCUIT_T1", Character.valueOf('S'),
-                      Blocks.wool}));
-    GameRegistry.addRecipe(new ShapedOreRecipe(
-        itHazmatChestplate,
-        new Object[] {"SSS", "BAB", "SCS", Character.valueOf('A'),
-                      Items.leather, Character.valueOf('C'),
-                      "calclavia:CIRCUIT_T1", Character.valueOf('S'),
-                      Blocks.wool}));
-    GameRegistry.addRecipe(new ShapedOreRecipe(
-        itHazmanLeggings,
-        new Object[] {"SSS", "BAB", "SCS", Character.valueOf('A'),
-                      Items.leather_leggings, Character.valueOf('C'),
-                      "calclavia:CIRCUIT_T1", Character.valueOf('S'),
-                      Blocks.wool}));
-    GameRegistry.addRecipe(new ShapedOreRecipe(
-        itHazmatBoots,
-        new Object[] {"SSS", "BAB", "SCS", Character.valueOf('A'),
-                      Items.leather_boots, Character.valueOf('C'),
-                      "calclavia:CIRCUIT_T1", Character.valueOf('S'),
-                      Blocks.wool}));
     EntityRegistry.registerGlobalEntityID(
         EMatter.class, "ASParticle", EntityRegistry.findGlobalUniqueEntityId());
     EntityRegistry.registerModEntity(EMatter.class, "ASParticle", 49, this, 80,
@@ -643,20 +514,6 @@ public class AtomicScience {
         }
       }
     }
-  }
-
-  @SubscribeEvent
-  @SideOnly(Side.CLIENT)
-  public void textureHook(Post event) {
-    // TODO: WTF
-    // if (event.map == Minecraft.getMinecraft().renderEngine.field_94155_m) {
-
-    FLUID_URANIUM_HEXAFLOURIDE.setIcons(
-        event.map.registerIcon("atomicscience:uraniumHexafluoride"));
-    // TODO: might override railcraft icon?
-    FLUID_STEAM.setIcons(event.map.registerIcon("atomicscience:steam"));
-    FLUID_TOXIC_WASTE.setIcons(
-        event.map.registerIcon("atomicscience:toxicWaste"));
   }
 
   // TODO: WTF

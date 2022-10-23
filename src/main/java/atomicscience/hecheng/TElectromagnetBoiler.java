@@ -9,7 +9,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import universalelectricity.core.vector.Vector3;
 import universalelectricity.prefab.tile.TileEntityAdvanced;
 
-public class TElectromagnet extends TileEntityAdvanced implements ITemperature {
+public class TElectromagnetBoiler extends TileEntityAdvanced implements ITemperature {
    public static final int MAX_TEMP = 5000;
    private float temperature = 0.0F;
 

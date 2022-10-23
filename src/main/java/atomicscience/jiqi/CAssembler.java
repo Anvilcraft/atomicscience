@@ -2,6 +2,7 @@ package atomicscience.jiqi;
 
 import atomicscience.AtomicScience;
 import atomicscience.TAtomicAssembler;
+import atomicscience.TileEntityFilteredSlot;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
@@ -14,13 +15,13 @@ public class CAssembler extends Container {
     public CAssembler(InventoryPlayer par1InventoryPlayer,
             TAtomicAssembler tileEntity) {
         this.tileEntity = tileEntity;
-        this.addSlotToContainer(new Slot(tileEntity, 0, 80, 40));
-        this.addSlotToContainer(new Slot(tileEntity, 1, 53, 56));
-        this.addSlotToContainer(new Slot(tileEntity, 2, 107, 56));
-        this.addSlotToContainer(new Slot(tileEntity, 3, 53, 88));
-        this.addSlotToContainer(new Slot(tileEntity, 4, 107, 88));
-        this.addSlotToContainer(new Slot(tileEntity, 5, 80, 103));
-        this.addSlotToContainer(new Slot(tileEntity, 6, 80, 72));
+        this.addSlotToContainer(new TileEntityFilteredSlot(tileEntity, 0, 80, 40));
+        this.addSlotToContainer(new TileEntityFilteredSlot(tileEntity, 1, 53, 56));
+        this.addSlotToContainer(new TileEntityFilteredSlot(tileEntity, 2, 107, 56));
+        this.addSlotToContainer(new TileEntityFilteredSlot(tileEntity, 3, 53, 88));
+        this.addSlotToContainer(new TileEntityFilteredSlot(tileEntity, 4, 107, 88));
+        this.addSlotToContainer(new TileEntityFilteredSlot(tileEntity, 5, 80, 103));
+        this.addSlotToContainer(new TileEntityFilteredSlot(tileEntity, 6, 80, 72));
 
         int var3;
         for (var3 = 0; var3 < 3; ++var3) {
@@ -62,6 +63,7 @@ public class CAssembler extends Container {
                         return null;
                     }
                 } else if (!this.getSlot(6).getHasStack() &&
+                        itemStack.isStackable() &&
                         !this.mergeItemStack(itemStack, 6, 7, false)) {
                     return null;
                 }

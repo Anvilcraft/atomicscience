@@ -263,7 +263,7 @@ public class EMatter extends Entity implements IEntityAdditionalSpawnData {
     }
 
     super.worldObj.playSoundEffect(
-        super.posX, super.posY, super.posZ, "atomicscience.antimatter", 1.5F,
+        super.posX, super.posY, super.posZ, SoundManager.ANTIMATTER, 1.5F,
         1.0F - super.worldObj.rand.nextFloat() * 0.3F);
     this.setDead();
   }
@@ -276,13 +276,11 @@ public class EMatter extends Entity implements IEntityAdditionalSpawnData {
   public static boolean canExist(World worldObj, Vector3 position,
                                  ForgeDirection facing) {
     if (position.getBlock(worldObj) != Blocks.air) {
-      AtomicScience.LOGGER.info("block not air " + position);
       return false;
     } else {
       for (int i = 0; i <= 1; ++i) {
         ForgeDirection dir = ForgeDirection.getOrientation(i);
         if (!isElectromagnet(worldObj, position, dir)) {
-          AtomicScience.LOGGER.info("not alectromagnet " + position);
           return false;
         }
       }

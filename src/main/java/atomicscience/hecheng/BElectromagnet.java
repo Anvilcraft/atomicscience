@@ -5,14 +5,15 @@ import atomicscience.jiqi.BBase;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 
 public class BElectromagnet extends BBase implements IElectromagnet {
-  private IIcon iconTop;
+  protected IIcon iconTop;
 
-  public BElectromagnet() { super("electromagnet"); }
+  public BElectromagnet() { this("electromagnet"); }
+
+  public BElectromagnet(String id) { super(id); }
 
   @Override
   public IIcon getIcon(int side, int metadata) {
@@ -23,15 +24,8 @@ public class BElectromagnet extends BBase implements IElectromagnet {
   @SideOnly(Side.CLIENT)
   public void registerBlockIcons(IIconRegister iconRegister) {
     super.registerBlockIcons(iconRegister);
-    this.iconTop = iconRegister.registerIcon(
-        this.getUnlocalizedName().replace("tile.", "") + "_top");
-    this.blockIcon = iconRegister.registerIcon(
-        this.getUnlocalizedName().replace("tile.", ""));
-  }
-
-  @Override
-  public TileEntity createNewTileEntity(World var1, int meta) {
-    return new TElectromagnet();
+    this.iconTop = iconRegister.registerIcon("atomicscience:electromagnet_top");
+    this.blockIcon = iconRegister.registerIcon("atomicscience:electromagnet");
   }
 
   @Override

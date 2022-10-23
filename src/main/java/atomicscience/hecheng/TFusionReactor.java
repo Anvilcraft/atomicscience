@@ -3,7 +3,6 @@ package atomicscience.hecheng;
 import atomicscience.AtomicScience;
 import atomicscience.jiqi.TInventory;
 import calclavia.lib.render.ITagRender;
-import com.google.common.io.ByteArrayDataInput;
 import java.util.HashMap;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ISidedInventory;

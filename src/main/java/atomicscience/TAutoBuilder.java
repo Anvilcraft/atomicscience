@@ -237,7 +237,7 @@ public class TAutoBuilder
                     targetPosition =
                         (new Vector3((double)x, 1.0D, (double)z)).add(diDian);
                     targetPosition.setBlock(
-                        this.worldObj, AtomicScience.bElectromagnet);
+                        this.worldObj, AtomicScience.bElectromagnetBoiler);
                     targetPosition =
                         (new Vector3((double)x, -1.0D, (double)z)).add(diDian);
                     targetPosition.setBlock(
@@ -329,7 +329,6 @@ public class TAutoBuilder
   }
 
   public static enum AutoBuilderType {
-
     JIA_SU_QI("Particle Accelerator"),
     FEN_LIE("Fission Reactor"),
     HE_CHENG("Fusion Reactor"),
