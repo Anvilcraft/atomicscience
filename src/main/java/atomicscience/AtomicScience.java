@@ -232,7 +232,6 @@ public class AtomicScience {
     bFulminationGenerator = new BFulminationGenerator();
     bAtomicAssembler = new BAtomicAssembler();
     bReactorTap = new BReactorTap();
-    bSuperConductor = new BSuperconductor();
     itHazmatHelmet =
         (new ItHazmatSuite(
 
@@ -372,7 +371,6 @@ public class AtomicScience {
     GameRegistry.registerTileEntity(TAutoBuilder.class, "ASAutoBuilder");
     GameRegistry.registerTileEntity(TFissionReactor.class, "ASFissionReactor");
     GameRegistry.registerTileEntity(TReactorTap.class, "ASReactorTap");
-    GameRegistry.registerTileEntity(TSuperconductor.class, "ASSuperconductor");
     proxy.preInit();
 
     channel = NetworkRegistry.INSTANCE.newSimpleChannel("AtomicScience");
