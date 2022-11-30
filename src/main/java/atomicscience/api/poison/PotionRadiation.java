@@ -6,7 +6,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import universalelectricity.prefab.potion.CustomPotion;
 
 public class PotionRadiation extends CustomPotion {
-    public static final PotionRadiation INSTANCE;
+    public static PotionRadiation INSTANCE;
 
     public PotionRadiation(int id, boolean isBadEffect, int color, String name) {
         super(AtomicScience.CONFIGURATION.get("Potion", name + " potion ID", id)
@@ -28,11 +28,5 @@ public class PotionRadiation extends CustomPotion {
 
     public boolean isReady(int duration, int amplifier) {
         return duration % 10 == 0;
-    }
-
-    static {
-        AtomicScience.CONFIGURATION.load();
-        INSTANCE = new PotionRadiation(21, true, 5149489, "radiation");
-        AtomicScience.CONFIGURATION.save();
     }
 }

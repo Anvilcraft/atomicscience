@@ -66,10 +66,11 @@ public class BToxicWaste extends BlockFluidClassic {
         AtomicScience.FLUID_TOXIC_WASTE.setIcons(this.blockIcon);
 
         // TODO: WTF
-        AtomicScience.FLUID_URANIUM_HEXAFLOURIDE.setIcons(
-                iconRegister.registerIcon("atomicscience:uraniumHexafluoride"));
+        AtomicScience.FLUID_URANIUM_HEXAFLOURIDE.setIcons(iconRegister.registerIcon("atomicscience:uraniumHexafluoride"));
         // TODO: might override railcraft icon?
-        AtomicScience.FLUID_STEAM.setIcons(
-                iconRegister.registerIcon("atomicscience:steam"));
+        AtomicScience.FLUID_STEAM.setIcons(iconRegister.registerIcon("atomicscience:steam"));
+        AtomicScience.FLUID_DEUTERIUM.setIcons(iconRegister.registerIcon("atomicscience:deuterium"));
+        AtomicScience.FLUID_TRITIUM.setIcons(iconRegister.registerIcon("atomicscience:tritium"));
+        
     }
 }

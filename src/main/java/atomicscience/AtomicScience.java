@@ -67,6 +67,8 @@ import cpw.mods.fml.common.registry.EntityRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+
+import java.io.File;
 import java.util.Arrays;
 import java.util.logging.Logger;
 import net.minecraft.block.Block;
@@ -106,7 +108,7 @@ import universalelectricity.prefab.ore.OreGenerator;
      dependencies = "required-after:basiccomponents")
 public class AtomicScience {
   public static Configuration CONFIGURATION =
-      new Configuration(Loader.instance().getConfigDir(), "AtomicScience.cfg");
+      new Configuration(new File(Loader.instance().getConfigDir(), "AtomicScience.cfg"));
   public static final String ID = "AtomicScience";
   public static final String CHANNEL = "AtomicScience";
   public static final String PREFIX = "atomicscience:";
@@ -120,6 +122,7 @@ public class AtomicScience {
   public static boolean ALLOW_LAYERED_TURBINES = true;
   public static boolean ALLOW_TOXIC_WASTE = true;
   public static boolean ALLOW_RADIOACTIVE_ORES = true;
+  public static boolean REQUIRE_TRITIUM = false;
   public static final int BLOCK_ID_PREFIX = 3768;
   public static final int ENTITY_ID_PREFIX = 49;
   public static Block blockRadioactive;
@@ -142,7 +145,6 @@ public class AtomicScience {
   public static Block bAtomicAssembler;
   public static Block bFissionReactor;
   public static Block bReactorTap;
-  public static Block bSuperConductor;
   public static final int ITEM_ID_PREFIX = 13768;
   public static Item itCell;
   public static Item itCellUranium;
@@ -150,6 +152,7 @@ public class AtomicScience {
   public static Item itCellStrangeMatter;
   public static Item itCellAntimatter;
   public static Item itCellDeuterium;
+  public static Item itCellTritium;
   public static Item itCellWater;
   public static Item itBucketToxic;
   public static Block bUraniumOre;
@@ -164,6 +167,8 @@ public class AtomicScience {
   public static Fluid FLUID_URANIUM_HEXAFLOURIDE;
   public static Fluid FLUID_STEAM;
   public static Fluid FLUID_TOXIC_WASTE;
+  public static Fluid FLUID_DEUTERIUM;
+  public static Fluid FLUID_TRITIUM;
   public static final ArmorMaterial hazmatArmorMaterial =
       EnumHelper.addArmorMaterial("HAZMAT", 0, new int[] {0, 0, 0, 0}, 0);
   public static OreGenBase uraniumOreGeneration;
@@ -208,7 +213,8 @@ public class AtomicScience {
     STEAM_RATIO =
         AtomicScience.CONFIGURATION.get("general", "Steam Ratio", STEAM_RATIO)
             .getInt(STEAM_RATIO);
-    PotionRadiation.INSTANCE.getId();
+    REQUIRE_TRITIUM = AtomicScience.CONFIGURATION.get("general", "Require Tritium", REQUIRE_TRITIUM).getBoolean(REQUIRE_TRITIUM);
+    PotionRadiation.INSTANCE = new PotionRadiation(21, true, 5149489, "radiation");
     blockRadioactive = (new BlockRadioactive()
                             .setBlockName("atomicscience:radioactive")
                             .setCreativeTab(TabAS.INSTANCE));
@@ -250,6 +256,7 @@ public class AtomicScience {
     itCell = new ItCell("cellEmpty");
     itCellUranium = new ItFissileFuel();
     itCellDeuterium = new ItCell("cellDeuterium");
+    itCellTritium =new ItCell("cellTritium");
     itCellStrangeMatter = new ItStrangeMatter();
     itCellAntimatter = new ItAntimatterCell();
     itCellWater = new ItCell("cellWater");
@@ -260,6 +267,8 @@ public class AtomicScience {
     FLUID_URANIUM_HEXAFLOURIDE = getOrRegisterFluid("uranium_hexafluoride");
     FLUID_STEAM = getOrRegisterFluid("steam");
     FLUID_TOXIC_WASTE = getOrRegisterFluid("toxic_waste");
+    FLUID_DEUTERIUM = getOrRegisterFluid("deuterium");
+    FLUID_TRITIUM = getOrRegisterFluid("tritium");
     bToxicWaste =
         (new BToxicWaste("toxicWaste")).setCreativeTab((CreativeTabs)null);
     itBucketToxic = (new ItemBucket(bToxicWaste))
@@ -278,6 +287,7 @@ public class AtomicScience {
     GameRegistry.registerItem(itCellStrangeMatter, "itCellStrangeMatter");
     GameRegistry.registerItem(itCellAntimatter, "itCellAntimatter");
     GameRegistry.registerItem(itCellDeuterium, "itCellDeuterium");
+    GameRegistry.registerItem(itCellTritium, "itCellTritium");
     GameRegistry.registerItem(itCellWater, "itCellWater");
     GameRegistry.registerItem(itBucketToxic, "itBucketToxic");
     GameRegistry.registerItem(itYellowcake, "itYellowcake");
@@ -311,7 +321,6 @@ public class AtomicScience {
     GameRegistry.registerBlock(bAtomicAssembler, "bAtomicAssembler");
     GameRegistry.registerBlock(bToxicWaste, "bToxicWaste");
     GameRegistry.registerBlock(bReactorTap, "bReactorTap");
-    GameRegistry.registerBlock(bSuperConductor, "bSuperConductor");
     uraniumOreGeneration = new OreGenReplaceStone("Uranium Ore", "oreUranium",
                                                   new ItemStack(bUraniumOre), 0,
                                                   25, 9, 3, "pickaxe", 2);
@@ -336,6 +345,7 @@ public class AtomicScience {
     OreDictionary.registerOre("cellEmpty", itCell);
     OreDictionary.registerOre("cellUranium", itCellUranium);
     OreDictionary.registerOre("cellDeuterium", itCellDeuterium);
+    OreDictionary.registerOre("cellTritium", itCellTritium);
     OreDictionary.registerOre("cellWater", itCellWater);
     OreDictionary.registerOre("strangeMatter", itCellStrangeMatter);
     OreDictionary.registerOre("antimatterMilligram",
@@ -344,6 +354,12 @@ public class AtomicScience {
                               new ItemStack(itCellAntimatter, 1, 1));
     FluidContainerRegistry.registerFluidContainer(new FluidContainerData(
         new FluidStack(FluidRegistry.WATER, 1000), new ItemStack(itCellWater),
+        new ItemStack(itCell)));
+    FluidContainerRegistry.registerFluidContainer(new FluidContainerData(
+        new FluidStack(FLUID_DEUTERIUM, 200), new ItemStack(itCellDeuterium),
+        new ItemStack(itCell)));
+    FluidContainerRegistry.registerFluidContainer(new FluidContainerData(
+        new FluidStack(FLUID_TRITIUM, 200), new ItemStack(itCellTritium),
         new ItemStack(itCell)));
     ForgeChunkManager.setForcedChunkLoadingCallback(this, (tickets, world) -> {
       for (Ticket ticket : tickets) {

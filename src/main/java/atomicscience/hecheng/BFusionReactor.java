@@ -9,6 +9,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
+import net.minecraftforge.fluids.FluidStack;
 
 public class BFusionReactor extends BBase {
 
@@ -21,23 +22,30 @@ public class BFusionReactor extends BBase {
             EntityPlayer entityPlayer, int side,
             float hitX, float hitY, float hitZ) {
         TileEntity tileEntity = world.getTileEntity(x, y, z);
-        if (entityPlayer.inventory.getCurrentItem() != null &&
-                AtomicScience.isFusionFuel(entityPlayer.inventory.getCurrentItem())) {
-            if (((TFusionReactor) tileEntity).getStackInSlot(0) != null) {
-                ItemStack var10000 = ((TFusionReactor) tileEntity).getStackInSlot(0);
-                var10000.stackSize += entityPlayer.inventory.getCurrentItem().stackSize;
-            } else {
-                ((TFusionReactor) tileEntity)
-                        .setInventorySlotContents(0,
-                                entityPlayer.inventory.getCurrentItem());
+        if (entityPlayer.inventory.getCurrentItem() != null) {
+            if (AtomicScience.isFusionFuel(entityPlayer.inventory.getCurrentItem())) {
+                int deuterium = entityPlayer.inventory.getCurrentItem().stackSize * 200;
+                int wouldFill = ((TFusionReactor) tileEntity).fill(null, new FluidStack(AtomicScience.FLUID_DEUTERIUM, deuterium), false);
+                int remainder = wouldFill % 200;
+                ((TFusionReactor) tileEntity).fill(null, new FluidStack(AtomicScience.FLUID_DEUTERIUM, deuterium - remainder), true);
+                entityPlayer.inventory.getCurrentItem().stackSize -= wouldFill / 200;
+                if (entityPlayer.inventory.getCurrentItem().stackSize <= 0) {
+                    entityPlayer.inventory.setInventorySlotContents(entityPlayer.inventory.currentItem, (ItemStack) null);
+                }
+                return true;
+            } else if (entityPlayer.inventory.getCurrentItem().getItem() == AtomicScience.itCellTritium) {
+                int tritium = entityPlayer.inventory.getCurrentItem().stackSize * 200;
+                int wouldFill = ((TFusionReactor) tileEntity).fill(null, new FluidStack(AtomicScience.FLUID_TRITIUM, tritium), false);
+                int remainder = wouldFill % 200;
+                ((TFusionReactor) tileEntity).fill(null, new FluidStack(AtomicScience.FLUID_TRITIUM, tritium - remainder), true);
+                entityPlayer.inventory.getCurrentItem().stackSize -= wouldFill / 200;
+                if (entityPlayer.inventory.getCurrentItem().stackSize <= 0) {
+                    entityPlayer.inventory.setInventorySlotContents(entityPlayer.inventory.currentItem, (ItemStack) null);
+                }
+                return true;
             }
-
-            entityPlayer.inventory.setInventorySlotContents(
-                    entityPlayer.inventory.currentItem, (ItemStack) null);
-            return true;
-        } else {
-            return false;
-        }
+        } 
+        return false;
     }
 
     @Override
