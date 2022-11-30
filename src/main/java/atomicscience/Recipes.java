@@ -4,8 +4,6 @@ import atomicscience.recipe.RecipeBuilder;
 import atomicscience.recipe.ShapedOreRecipeAdapter;
 import atomicscience.recipe.ShapelessOreRecipeAdapter;
 import basiccomponents.common.BasicComponents;
-import cpw.mods.fml.common.Loader;
-import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemArmor;
@@ -19,22 +17,6 @@ public class Recipes {
    */
   public static void addRecipes() {
     OreDictionary.registerOre("cellEmpty", AtomicScience.itCell);
-    if (Loader.isModLoaded("IC2")) {
-      new RecipeBuilder(new ShapelessOreRecipeAdapter())
-          .output(AtomicScience.itYellowcake)
-          .ingredient(GameRegistry.findItem("IC2", "reactorUraniumSimple"))
-          .register();
-
-      new RecipeBuilder(new ShapelessOreRecipeAdapter())
-          .output(GameRegistry.findItem("IC2", "itemFluidCell"))
-          .ingredient(AtomicScience.itCell)
-          .register();
-
-      new RecipeBuilder(new ShapelessOreRecipeAdapter())
-          .output(AtomicScience.itCell)
-          .ingredient("cellEmpty")
-          .register();
-    }
 
     new RecipeBuilder(new ShapelessOreRecipeAdapter())
         .output(new ItemStack(AtomicScience.itCellAntimatter, 1, 1))
