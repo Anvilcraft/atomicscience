@@ -1,6 +1,7 @@
 package atomicscience;
 
 import atomicscience.api.poison.PoisonRadiation;
+import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import java.util.Random;
@@ -65,12 +66,13 @@ public class BToxicWaste extends BlockFluidClassic {
         this.blockIcon = iconRegister.registerIcon("atomicscience:toxicWaste");
         AtomicScience.FLUID_TOXIC_WASTE.setIcons(this.blockIcon);
 
-        // TODO: WTF
         AtomicScience.FLUID_URANIUM_HEXAFLOURIDE.setIcons(iconRegister.registerIcon("atomicscience:uraniumHexafluoride"));
-        // TODO: might override railcraft icon?
-        AtomicScience.FLUID_STEAM.setIcons(iconRegister.registerIcon("atomicscience:steam"));
-        AtomicScience.FLUID_DEUTERIUM.setIcons(iconRegister.registerIcon("atomicscience:deuterium"));
-        AtomicScience.FLUID_TRITIUM.setIcons(iconRegister.registerIcon("atomicscience:tritium"));
-        
+        if (!Loader.isModLoaded("Railcraft")) {
+            AtomicScience.FLUID_STEAM.setIcons(iconRegister.registerIcon("atomicscience:steam"));
+        }
+        if (!Loader.isModLoaded("Mekanism")) {
+            AtomicScience.FLUID_DEUTERIUM.setIcons(iconRegister.registerIcon("atomicscience:deuterium"));
+            AtomicScience.FLUID_TRITIUM.setIcons(iconRegister.registerIcon("atomicscience:tritium"));
+        }
     }
 }

@@ -40,7 +40,6 @@ public class BAccelerator extends BBaseRotatable implements IElectromagnet {
 
   @Override
   public boolean isRunning(World world, int x, int y, int z) {
-    // TODO: WTF
     return true;
   }
 }

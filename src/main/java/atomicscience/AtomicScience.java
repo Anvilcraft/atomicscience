@@ -60,13 +60,12 @@ import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import cpw.mods.fml.common.registry.EntityRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
 import java.io.File;
 import java.util.Arrays;
@@ -81,25 +80,26 @@ import net.minecraft.item.ItemBucket;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
-import net.minecraftforge.client.event.TextureStitchEvent.Post;
 import net.minecraftforge.common.ForgeChunkManager;
 import net.minecraftforge.common.ForgeChunkManager.Ticket;
 import net.minecraftforge.common.ForgeChunkManager.Type;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.common.util.EnumHelper;
+import net.minecraftforge.event.world.WorldEvent.Save;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidContainerRegistry.FluidContainerData;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
-import net.minecraftforge.oredict.ShapedOreRecipe;
-import net.minecraftforge.oredict.ShapelessOreRecipe;
-import universalelectricity.core.item.ElectricItemHelper;
 import universalelectricity.core.item.ItemElectric;
 import universalelectricity.core.vector.Vector3;
 import universalelectricity.prefab.TranslationHelper;
+import universalelectricity.prefab.flag.CommandFlag;
+import universalelectricity.prefab.flag.FlagRegistry;
+import universalelectricity.prefab.flag.ModFlag;
+import universalelectricity.prefab.flag.NBTFileLoader;
 import universalelectricity.prefab.ore.OreGenBase;
 import universalelectricity.prefab.ore.OreGenReplaceStone;
 import universalelectricity.prefab.ore.OreGenerator;
@@ -174,8 +174,7 @@ public class AtomicScience {
   public static OreGenBase uraniumOreGeneration;
   public static int URANIUM_HEXAFLOURIDE_RATIO = 200;
   public static int STEAM_RATIO = 40;
-  // public static final String QIZI_FAN_WU_SU_BAO_ZHA =
-  // FlagRegistry.registerFlag("ban_antimatter_power");
+  public static final String QIZI_FAN_WU_SU_BAO_ZHA = FlagRegistry.registerFlag("ban_antimatter_power");
   public static final Logger LOGGER = Logger.getLogger("AtomicScience");
 
   public static SimpleNetworkWrapper channel;
@@ -531,27 +530,18 @@ public class AtomicScience {
     }
   }
 
-  // TODO: WTF
-  // @EventHandler public void serverStarting(FMLServerStartingEvent event) {
-  // FlagRegistry.registerModFlag(
-  // "ModFlags", new ModFlag(NBTFileLoader.loadData("ModFlags")));
-  // ICommandManager commandManager = FMLCommonHandler.instance()
-  // .getMinecraftServerInstance()
-  // .getCommandManager();
-  // ServerCommandManager serverCommandManager =
-  // (ServerCommandManager)commandManager;
-  // serverCommandManager.registerCommand(
-  // new CommandFlag(FlagRegistry.getModFlag("ModFlags")));
-  // }
+  @EventHandler 
+  public void serverStarting(FMLServerStartingEvent event) {
+    FlagRegistry.registerModFlag("ModFlags", new ModFlag(NBTFileLoader.loadData("ModFlags")));
+    event.registerServerCommand(new CommandFlag(FlagRegistry.getModFlag("ModFlags")));
+  }
 
-  // TODO: WTF
-  // @ForgeSubscribe
-  // public void worldSave(Save evt) {
-  // if (!evt.world.isRemote) {
-  // NBTFileLoader.saveData("ModFlags",
-  // FlagRegistry.getModFlag("ModFlags").getNBT());
-  // }
-  // }
+  @EventHandler
+  public void worldSave(Save evt) {
+    if (!evt.world.isRemote) {
+      NBTFileLoader.saveData("ModFlags", FlagRegistry.getModFlag("ModFlags").getNBT());
+    }
+  }
 
   public static int getLiquidAmount(FluidStack liquid) {
     return liquid != null ? liquid.amount : 0;

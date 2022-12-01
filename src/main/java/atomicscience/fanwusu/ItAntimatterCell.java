@@ -23,6 +23,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.item.ItemExpireEvent;
 import universalelectricity.core.vector.Vector3;
+import universalelectricity.prefab.flag.FlagRegistry;
 
 public class ItAntimatterCell extends ItCell {
 
@@ -80,13 +81,7 @@ public class ItAntimatterCell extends ItCell {
                         event.entityItem.posX, event.entityItem.posY, event.entityItem.posZ,
                         SoundManager.ANTIMATTER, 3.0F,
                         1.0F - event.entityItem.worldObj.rand.nextFloat() * 0.3F);
-                if (!event.entityItem.worldObj.isRemote
-                // &&
-                // ! FlagRegistry.getModFlag("ModFlags")
-                // .containsValue(event.entityItem.worldObj,
-                // ZhuYao.QIZI_FAN_WU_SU_BAO_ZHA, "true",
-                // new Vector3(event.entityItem))
-                ) {
+                if (!event.entityItem.worldObj.isRemote && !FlagRegistry.getModFlag("ModFlags").containsValue(event.entityItem.worldObj, AtomicScience.QIZI_FAN_WU_SU_BAO_ZHA, "true", new Vector3(event.entityItem))) {
                     IExplosive explosive = new IExplosive() {
                         public int getID() {
                             return -1;
