@@ -206,6 +206,16 @@ public class Recipes {
         .ingredient('M', BasicComponents.itemMotor)
         .register();
 
+    new RecipeBuilder(new ShapelessOreRecipeAdapter())
+        .output(AtomicScience.bElectromagnetBoiler)
+        .ingredient(AtomicScience.bElectromagnet)
+        .register();
+
+    new RecipeBuilder(new ShapelessOreRecipeAdapter())
+        .output(AtomicScience.bElectromagnet)
+        .ingredient(AtomicScience.bElectromagnetBoiler)
+        .register();
+
     for (ItemArmor armorPiece :
          new ItemArmor[] {Items.leather_helmet, Items.leather_chestplate,
                           Items.leather_leggings, Items.leather_boots}) {

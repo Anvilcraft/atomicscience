@@ -32,6 +32,7 @@ import atomicscience.hecheng.BElectromagnetGlass;
 import atomicscience.hecheng.BFusionReactor;
 import atomicscience.hecheng.BPlasma;
 import atomicscience.hecheng.IBAccelerator;
+import atomicscience.hecheng.IBElectromagnet;
 import atomicscience.hecheng.IBPlasma;
 import atomicscience.hecheng.IBSiren;
 import atomicscience.hecheng.TElectromagnetBoiler;
@@ -307,8 +308,8 @@ public class AtomicScience {
     GameRegistry.registerBlock(bThermometer, "bThermometer");
     GameRegistry.registerBlock(bFusionReactor, "bFusionReactor");
     GameRegistry.registerBlock(bPlasma, IBPlasma.class, "bPlasma");
-    GameRegistry.registerBlock(bElectromagnet, "bElectromagnet");
-    GameRegistry.registerBlock(bElectromagnetBoiler, "bElectromagnetBoiler");
+    GameRegistry.registerBlock(bElectromagnet, IBElectromagnet.class, "bElectromagnet");
+    GameRegistry.registerBlock(bElectromagnetBoiler, IBElectromagnet.class, "bElectromagnetBoiler");
     GameRegistry.registerBlock(bChemicalExtractor, "bChemicalExtractor");
     GameRegistry.registerBlock(bSiren, IBSiren.class, "bSiren");
     GameRegistry.registerBlock(bElectromagnetGlass, "bElectromagnetGlass");
