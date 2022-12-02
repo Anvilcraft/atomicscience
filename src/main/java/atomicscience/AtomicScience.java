@@ -119,7 +119,7 @@ public class AtomicScience {
   public static CommonProxy proxy;
   @Metadata("AtomicScience") public static ModMetadata metadata;
   private static final String[] LANGUAGES = new String[] {"en_US"};
-  public static float WOLUN_MULTIPLIER_OUTPUT = 30.0F;
+  public static float WOLUN_MULTIPLIER_OUTPUT = 15.0F;
   public static boolean ALLOW_LAYERED_TURBINES = true;
   public static boolean ALLOW_TOXIC_WASTE = true;
   public static boolean ALLOW_RADIOACTIVE_ORES = true;
@@ -174,7 +174,7 @@ public class AtomicScience {
       EnumHelper.addArmorMaterial("HAZMAT", 0, new int[] {0, 0, 0, 0}, 0);
   public static OreGenBase uraniumOreGeneration;
   public static int URANIUM_HEXAFLOURIDE_RATIO = 200;
-  public static int STEAM_RATIO = 40;
+  public static int STEAM_RATIO = 120;
   public static final String QIZI_FAN_WU_SU_BAO_ZHA = FlagRegistry.registerFlag("ban_antimatter_power");
   public static final Logger LOGGER = Logger.getLogger("AtomicScience");
 

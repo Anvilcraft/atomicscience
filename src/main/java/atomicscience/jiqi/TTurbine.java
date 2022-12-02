@@ -45,10 +45,12 @@ public class TTurbine extends TileEntityUniversalProducer
     @Override
     public void updateEntity() {
         super.updateEntity();
-        if (this.tank.getFluid() != null &&
-                this.tank.getFluidAmount() > AtomicScience.STEAM_RATIO) {
-            this.onReceiveSteam(AtomicScience.STEAM_RATIO);
+        if (this.tank.getFluid() != null && this.tank.getFluidAmount() > AtomicScience.STEAM_RATIO && !this.isMultiblock) {
+            this.onReceiveSteam(1);
             this.tank.drain(AtomicScience.STEAM_RATIO, true);
+        } else if (this.tank.getFluid() != null && this.tank.getFluidAmount() > AtomicScience.STEAM_RATIO * 9 && this.isMultiblock) {
+            this.onReceiveSteam(9);
+            this.tank.drain(AtomicScience.STEAM_RATIO * 9, true);
         }
 
         if (this.masterTurbine != null) {
@@ -242,7 +244,7 @@ public class TTurbine extends TileEntityUniversalProducer
     }
 
     public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
-        return this.tank.fill(resource, doFill);
+        return this.masterTurbine == null ? this.tank.fill(resource, doFill) : 0;
     }
 
     public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain) {
@@ -262,7 +264,7 @@ public class TTurbine extends TileEntityUniversalProducer
     @Override
     public boolean canFill(ForgeDirection arg0, Fluid arg1) {
         return arg1 == AtomicScience.FLUID_STEAM &&
-                this.tank.getFluidAmount() < this.tank.getCapacity();
+                this.tank.getFluidAmount() < this.tank.getCapacity() && this.masterTurbine == null;
     }
 
     @Override
