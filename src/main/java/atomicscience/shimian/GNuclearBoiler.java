@@ -4,7 +4,7 @@ import atomicscience.fenlie.TNuclearBoiler;
 import atomicscience.hecheng.CNuclearBoiler;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.StatCollector;
-import universalelectricity.core.electricity.ElectricityDisplay;
+import universalelectricity.api.energy.UnitDisplay;
 
 public class GNuclearBoiler extends GBase {
 
@@ -21,12 +21,12 @@ public class GNuclearBoiler extends GBase {
                                     4210752);
     this.tileEntity.getClass();
     this.fontRendererObj.drawString(
-        ElectricityDisplay.getDisplay((double)(800.0F * 20.0F),
-                                      ElectricityDisplay.ElectricUnit.WATT),
+        UnitDisplay.getDisplay((double)(800.0F * 20.0F),
+                                      UnitDisplay.Unit.WATT),
         55, 48, 4210752);
     this.fontRendererObj.drawString(
-        ElectricityDisplay.getDisplay(this.tileEntity.getVoltage(),
-                                      ElectricityDisplay.ElectricUnit.VOLTAGE),
+        UnitDisplay.getDisplay(this.tileEntity.getVoltage(),
+                                      UnitDisplay.Unit.VOLTAGE),
         55, 60, 4210752);
     this.fontRendererObj.drawString(
         StatCollector.translateToLocal("container.inventory"), 8,

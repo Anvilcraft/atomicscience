@@ -4,7 +4,7 @@ import atomicscience.hecheng.CChemicalExtractor;
 import atomicscience.jiqi.TChemicalExtractor;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.StatCollector;
-import universalelectricity.core.electricity.ElectricityDisplay;
+import universalelectricity.api.energy.UnitDisplay;
 
 public class GChemicalExtractor extends GBase {
   private TChemicalExtractor tileEntity;
@@ -21,12 +21,12 @@ public class GChemicalExtractor extends GBase {
                                     4210752);
     this.tileEntity.getClass();
     this.fontRendererObj.drawString(
-        ElectricityDisplay.getDisplay((double)(500.0F * 20.0F),
-                                      ElectricityDisplay.ElectricUnit.WATT),
+        UnitDisplay.getDisplay((double)(500.0F * 20.0F),
+                                      UnitDisplay.Unit.WATT),
         90, 48, 4210752);
     this.fontRendererObj.drawString(
-        ElectricityDisplay.getDisplay(this.tileEntity.getVoltage(),
-                                      ElectricityDisplay.ElectricUnit.VOLTAGE),
+        UnitDisplay.getDisplay(this.tileEntity.getVoltage(),
+                                      UnitDisplay.Unit.VOLTAGE),
         90, 60, 4210752);
     this.fontRendererObj.drawString(
         StatCollector.translateToLocal("container.inventory"), 8,

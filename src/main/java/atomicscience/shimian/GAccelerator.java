@@ -7,7 +7,8 @@ import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
-import universalelectricity.core.electricity.ElectricityDisplay;
+
+import universalelectricity.api.energy.UnitDisplay;
 import universalelectricity.core.vector.Vector3;
 
 public class GAccelerator extends GuiContainer {
@@ -54,20 +55,20 @@ public class GAccelerator extends GuiContainer {
         8, 27, 4210752);
     this.fontRendererObj.drawString("Status: " + status, 8, 38, 4210752);
     this.fontRendererObj.drawString(
-        "Used: " + ElectricityDisplay.getDisplayShort(
+        "Used: " + UnitDisplay.getDisplayShort(
                        this.tileEntity.yongDianLiang,
-                       ElectricityDisplay.ElectricUnit.JOULES),
+                       UnitDisplay.Unit.JOULES),
         8, 49, 4210752);
     StringBuilder var10001 = new StringBuilder();
     this.tileEntity.getClass();
     this.fontRendererObj.drawString(
         var10001
-            .append(ElectricityDisplay.getDisplayShort(
-                (double)(10000 * 20), ElectricityDisplay.ElectricUnit.WATT))
+            .append(UnitDisplay.getDisplayShort(
+                (double)(10000 * 20), UnitDisplay.Unit.WATT))
             .append(" ")
-            .append(ElectricityDisplay.getDisplayShort(
+            .append(UnitDisplay.getDisplayShort(
                 this.tileEntity.getVoltage(),
-                ElectricityDisplay.ElectricUnit.VOLTAGE))
+                UnitDisplay.Unit.VOLTAGE))
             .toString(),
         8, 60, 4210752);
     this.fontRendererObj.drawString(

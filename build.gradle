@@ -23,7 +23,7 @@ apply plugin: 'maven-publish'
 sourceCompatibility = JavaVersion.VERSION_1_8
 targetCompatibility = JavaVersion.VERSION_1_8
 
-version = "1.0.1"
+version = "1.1.0"
 group = "universalelectricity"
 archivesBaseName = "atomicscience"
 
@@ -37,7 +37,8 @@ repositories {
 }
 
 dependencies {
-    implementation "universalelectricity:basiccomponents:1.1.1:deobf"
+    implementation "universalelectricity:basiccomponents:2.0.0:deobf"
+    implementation "universalelectricity:universalelectricity:5.1.0:deobf"
 }
 
 processResources {

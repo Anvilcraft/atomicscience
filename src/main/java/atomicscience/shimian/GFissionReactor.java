@@ -3,7 +3,7 @@ package atomicscience.shimian;
 import atomicscience.fenlie.TFissionReactor;
 import calclavia.lib.gui.GuiContainerBase;
 import net.minecraft.entity.player.InventoryPlayer;
-import universalelectricity.core.electricity.ElectricityDisplay;
+import universalelectricity.api.energy.UnitDisplay;
 
 public class GFissionReactor extends GuiContainerBase {
   private TFissionReactor tileEntity;
@@ -33,7 +33,7 @@ public class GFissionReactor extends GuiContainerBase {
         4210752);
     this.fontRendererObj.drawString(
         "Steam Emission: " +
-            ElectricityDisplay.roundDecimals(
+            UnitDisplay.roundDecimals(
                 (double)(1.0F / (Math.max(40.0F - this.tileEntity.wenDu /
                                                       2000.0F * 40.0F,
                                           2.0F) /

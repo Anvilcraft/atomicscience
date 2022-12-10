@@ -4,7 +4,7 @@ import atomicscience.fenlie.CCentrifuge;
 import atomicscience.fenlie.TCentrifuge;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.StatCollector;
-import universalelectricity.core.electricity.ElectricityDisplay;
+import universalelectricity.api.energy.UnitDisplay;
 
 public class GCentrifuge extends GBase {
   private TCentrifuge tileEntity;
@@ -32,12 +32,12 @@ public class GCentrifuge extends GBase {
 
     this.fontRendererObj.drawString("Status: " + displayText, 70, 50, 4210752);
     this.fontRendererObj.drawString(
-        ElectricityDisplay.getDisplay(10000.0D,
-                                      ElectricityDisplay.ElectricUnit.WATT),
+        UnitDisplay.getDisplay(10000.0D,
+                                      UnitDisplay.Unit.WATT),
         70, 60, 4210752);
     this.fontRendererObj.drawString(
-        ElectricityDisplay.getDisplay(this.tileEntity.getVoltage(),
-                                      ElectricityDisplay.ElectricUnit.VOLTAGE),
+        UnitDisplay.getDisplay(this.tileEntity.getVoltage(),
+                                      UnitDisplay.Unit.VOLTAGE),
         70, 70, 4210752);
     this.fontRendererObj.drawString(
         StatCollector.translateToLocal("container.inventory"), 8,
