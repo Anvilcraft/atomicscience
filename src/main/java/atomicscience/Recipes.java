@@ -216,16 +216,36 @@ public class Recipes {
         .ingredient(AtomicScience.bElectromagnetBoiler)
         .register();
 
-    for (ItemArmor armorPiece :
-         new ItemArmor[] {Items.leather_helmet, Items.leather_chestplate,
-                          Items.leather_leggings, Items.leather_boots}) {
-      new RecipeBuilder(new ShapedOreRecipeAdapter())
-          .output(AtomicScience.itHazmatHelmet)
-          .pattern("SSS", " A ", "SCS")
-          .ingredient('A', armorPiece)
-          .ingredient('C', BasicComponents.itemCircuitBasic)
-          .ingredient('S', Blocks.wool)
-          .register();
-    }
+    new RecipeBuilder(new ShapedOreRecipeAdapter())
+        .output(AtomicScience.itHazmatHelmet)
+        .pattern("SSS", " A ", "SCS")
+        .ingredient('A', Items.leather_helmet)
+        .ingredient('C', BasicComponents.itemCircuitBasic)
+        .ingredient('S', Blocks.wool)
+        .register();
+
+    new RecipeBuilder(new ShapedOreRecipeAdapter())
+        .output(AtomicScience.itHazmatChestplate)
+        .pattern("SSS", " A ", "SCS")
+        .ingredient('A', Items.leather_chestplate)
+        .ingredient('C', BasicComponents.itemCircuitBasic)
+        .ingredient('S', Blocks.wool)
+        .register();
+
+    new RecipeBuilder(new ShapedOreRecipeAdapter())
+        .output(AtomicScience.itHazmanLeggings)
+        .pattern("SSS", " A ", "SCS")
+        .ingredient('A', Items.leather_leggings)
+        .ingredient('C', BasicComponents.itemCircuitBasic)
+        .ingredient('S', Blocks.wool)
+        .register();
+
+    new RecipeBuilder(new ShapedOreRecipeAdapter())
+        .output(AtomicScience.itHazmatBoots)
+        .pattern("SSS", " A ", "SCS")
+        .ingredient('A', Items.leather_boots)
+        .ingredient('C', BasicComponents.itemCircuitBasic)
+        .ingredient('S', Blocks.wool)
+        .register();
   }
 }
