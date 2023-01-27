@@ -17,28 +17,35 @@ public class CChemicalExtractor extends Container {
     // private static final int slotCount = 4;
     private TChemicalExtractor tileEntity;
 
-    public CChemicalExtractor(InventoryPlayer par1InventoryPlayer,
-            TChemicalExtractor tileEntity) {
+    public CChemicalExtractor(
+        InventoryPlayer par1InventoryPlayer, TChemicalExtractor tileEntity
+    ) {
         this.tileEntity = tileEntity;
         this.addSlotToContainer(
-                new SlotSpecific(tileEntity, 0, 65, 49, IItemElectric.class));
+            new SlotSpecific(tileEntity, 0, 65, 49, IItemElectric.class)
+        );
         this.addSlotToContainer(new Slot(tileEntity, 1, 25, 50));
         this.addSlotToContainer(
-                new SlotFurnace(par1InventoryPlayer.player, tileEntity, 2, 118, 25));
+            new SlotFurnace(par1InventoryPlayer.player, tileEntity, 2, 118, 25)
+        );
         this.addSlotToContainer(new Slot(tileEntity, 3, 65, 25));
 
         int var3;
         for (var3 = 0; var3 < 3; ++var3) {
             for (int var4 = 0; var4 < 9; ++var4) {
-                this.addSlotToContainer(new Slot(par1InventoryPlayer,
-                        var4 + var3 * 9 + 9, 8 + var4 * 18,
-                        84 + var3 * 18));
+                this.addSlotToContainer(new Slot(
+                    par1InventoryPlayer,
+                    var4 + var3 * 9 + 9,
+                    8 + var4 * 18,
+                    84 + var3 * 18
+                ));
             }
         }
 
         for (var3 = 0; var3 < 9; ++var3) {
             this.addSlotToContainer(
-                    new Slot(par1InventoryPlayer, var3, 8 + var3 * 18, 142));
+                new Slot(par1InventoryPlayer, var3, 8 + var3 * 18, 142)
+            );
         }
 
         tileEntity.openInventory();
@@ -57,8 +64,7 @@ public class CChemicalExtractor extends Container {
     }
 
     @Override
-    public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer,
-            int par1) {
+    public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int par1) {
         ItemStack var2 = null;
         Slot var3 = (Slot) super.inventorySlots.get(par1);
         if (var3 != null && var3.getHasStack()) {
@@ -74,14 +80,12 @@ public class CChemicalExtractor extends Container {
                     if (!this.mergeItemStack(itemStack, 1, 2, false)) {
                         return null;
                     }
-                } else if (!AtomicScience.isCell(itemStack) &&
-                        !AtomicScience.isUraniumOre(itemStack)) {
+                } else if (!AtomicScience.isCell(itemStack) && !AtomicScience.isUraniumOre(itemStack)) {
                     if (par1 < 31) {
                         if (!this.mergeItemStack(itemStack, 31, 40, false)) {
                             return null;
                         }
-                    } else if (par1 >= 31 && par1 < 40 &&
-                            !this.mergeItemStack(itemStack, 4, 30, false)) {
+                    } else if (par1 >= 31 && par1 < 40 && !this.mergeItemStack(itemStack, 4, 30, false)) {
                         return null;
                     }
                 } else if (!this.mergeItemStack(itemStack, 3, 4, false)) {

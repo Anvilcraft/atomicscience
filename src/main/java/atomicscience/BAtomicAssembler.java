@@ -14,14 +14,27 @@ public class BAtomicAssembler extends BBase {
     }
 
     @Override
-    public boolean onMachineActivated(World par1World, int x, int y, int z,
-            EntityPlayer par5EntityPlayer, int side,
-            float hitX, float hitY, float hitZ) {
+    public boolean onMachineActivated(
+        World par1World,
+        int x,
+        int y,
+        int z,
+        EntityPlayer par5EntityPlayer,
+        int side,
+        float hitX,
+        float hitY,
+        float hitZ
+    ) {
         par1World.getBlockMetadata(x, y, z);
         if (!par1World.isRemote) {
-            par5EntityPlayer.openGui(AtomicScience.instance,
-                    CommonProxy.GuiType.ATOMIC_ASSEMBLER.ordinal(),
-                    par1World, x, y, z);
+            par5EntityPlayer.openGui(
+                AtomicScience.instance,
+                CommonProxy.GuiType.ATOMIC_ASSEMBLER.ordinal(),
+                par1World,
+                x,
+                y,
+                z
+            );
         }
         return true;
     }

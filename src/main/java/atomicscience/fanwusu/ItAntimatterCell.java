@@ -1,5 +1,8 @@
 package atomicscience.fanwusu;
 
+import java.util.Iterator;
+import java.util.List;
+
 import atomicscience.AtomicScience;
 import atomicscience.SoundManager;
 import atomicscience.api.poison.PoisonRadiation;
@@ -9,8 +12,6 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import icbm.api.explosion.ExplosionEvent;
 import icbm.api.explosion.IExplosive;
-import java.util.Iterator;
-import java.util.List;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLiving;
@@ -26,7 +27,6 @@ import universalelectricity.core.vector.Vector3;
 import universalelectricity.prefab.flag.FlagRegistry;
 
 public class ItAntimatterCell extends ItCell {
-
     private IIcon iconGram;
 
     public ItAntimatterCell() {
@@ -36,9 +36,9 @@ public class ItAntimatterCell extends ItCell {
     }
 
     @Override
-    public void addInformation(ItemStack par1ItemStack,
-            EntityPlayer par2EntityPlayer, List list,
-            boolean par4) {
+    public void addInformation(
+        ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List list, boolean par4
+    ) {
         if (par1ItemStack.getItemDamage() >= 1) {
             list.add("1 Gram");
         } else {
@@ -50,9 +50,11 @@ public class ItAntimatterCell extends ItCell {
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister iconRegister) {
         this.itemIcon = iconRegister.registerIcon(
-                this.getUnlocalizedName().replace("item.", "") + "_milligram");
+            this.getUnlocalizedName().replace("item.", "") + "_milligram"
+        );
         this.iconGram = iconRegister.registerIcon(
-                this.getUnlocalizedName().replace("item.", "") + "_gram");
+            this.getUnlocalizedName().replace("item.", "") + "_gram"
+        );
     }
 
     @Override
@@ -61,8 +63,7 @@ public class ItAntimatterCell extends ItCell {
     }
 
     @Override
-    public void getSubItems(Item item, CreativeTabs par2CreativeTabs,
-            List par3List) {
+    public void getSubItems(Item item, CreativeTabs par2CreativeTabs, List par3List) {
         par3List.add(new ItemStack(item, 1, 0));
         par3List.add(new ItemStack(item, 1, 1));
     }
@@ -78,10 +79,21 @@ public class ItAntimatterCell extends ItCell {
             ItemStack itemStack = event.entityItem.getEntityItem();
             if (itemStack != null && itemStack.getItem() == this) {
                 event.entityItem.worldObj.playSoundEffect(
-                        event.entityItem.posX, event.entityItem.posY, event.entityItem.posZ,
-                        SoundManager.ANTIMATTER, 3.0F,
-                        1.0F - event.entityItem.worldObj.rand.nextFloat() * 0.3F);
-                if (!event.entityItem.worldObj.isRemote && !FlagRegistry.getModFlag("ModFlags").containsValue(event.entityItem.worldObj, AtomicScience.QIZI_FAN_WU_SU_BAO_ZHA, "true", new Vector3(event.entityItem))) {
+                    event.entityItem.posX,
+                    event.entityItem.posY,
+                    event.entityItem.posZ,
+                    SoundManager.ANTIMATTER,
+                    3.0F,
+                    1.0F - event.entityItem.worldObj.rand.nextFloat() * 0.3F
+                );
+                if (!event.entityItem.worldObj.isRemote
+                    && !FlagRegistry.getModFlag("ModFlags")
+                            .containsValue(
+                                event.entityItem.worldObj,
+                                AtomicScience.QIZI_FAN_WU_SU_BAO_ZHA,
+                                "true",
+                                new Vector3(event.entityItem)
+                            )) {
                     IExplosive explosive = new IExplosive() {
                         public int getID() {
                             return -1;
@@ -160,26 +172,43 @@ public class ItAntimatterCell extends ItCell {
                     }
 
                     MinecraftForge.EVENT_BUS.post(new ExplosionEvent.PreExplosionEvent(
-                            event.entity.worldObj, event.entityItem.posX,
-                            event.entityItem.posY, event.entityItem.posZ, explosive));
+                        event.entity.worldObj,
+                        event.entityItem.posX,
+                        event.entityItem.posY,
+                        event.entityItem.posZ,
+                        explosive
+                    ));
                     event.entityItem.worldObj.createExplosion(
-                            event.entityItem, event.entityItem.posX, event.entityItem.posY,
-                            event.entityItem.posZ, explosive.getRadius(), true);
+                        event.entityItem,
+                        event.entityItem.posX,
+                        event.entityItem.posY,
+                        event.entityItem.posZ,
+                        explosive.getRadius(),
+                        true
+                    );
                     AtomicScience.LOGGER.fine(
-                            "Antimatter cell detonated at: " + event.entityItem.posX + ", " +
-                                    event.entityItem.posY + ", " + event.entityItem.posZ);
+                        "Antimatter cell detonated at: " + event.entityItem.posX + ", "
+                        + event.entityItem.posY + ", " + event.entityItem.posZ
+                    );
                     boolean radius = true;
                     AxisAlignedBB bounds = AxisAlignedBB.getBoundingBox(
-                            event.entityItem.posX - 20.0D, event.entityItem.posY - 20.0D,
-                            event.entityItem.posZ - 20.0D, event.entityItem.posX + 20.0D,
-                            event.entityItem.posY + 20.0D, event.entityItem.posZ + 20.0D);
+                        event.entityItem.posX - 20.0D,
+                        event.entityItem.posY - 20.0D,
+                        event.entityItem.posZ - 20.0D,
+                        event.entityItem.posX + 20.0D,
+                        event.entityItem.posY + 20.0D,
+                        event.entityItem.posZ + 20.0D
+                    );
                     List entitiesNearby = event.entityItem.worldObj.getEntitiesWithinAABB(
-                            EntityLiving.class, bounds);
+                        EntityLiving.class, bounds
+                    );
                     Iterator i$ = entitiesNearby.iterator();
 
                     while (i$.hasNext()) {
                         EntityLiving entity = (EntityLiving) i$.next();
-                        PoisonRadiation.INSTANCE.poisonEntity(new Vector3(entity), entity);
+                        PoisonRadiation.INSTANCE.poisonEntity(
+                            new Vector3(entity), entity
+                        );
                     }
                 }
             }

@@ -1,8 +1,9 @@
 package atomicscience.jiqi;
 
-import calclavia.lib.TileEntityUniversalRunnable;
 import java.util.HashSet;
 import java.util.Set;
+
+import calclavia.lib.TileEntityUniversalRunnable;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
@@ -10,17 +11,19 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 
 public abstract class TInventory
-        extends TileEntityUniversalRunnable implements IInventory {
+    extends TileEntityUniversalRunnable implements IInventory {
     public final Set<EntityPlayer> players = new HashSet<>();
     protected ItemStack[] containingItems = new ItemStack[this.getSizeInventory()];
 
     @Override
     public boolean isUseableByPlayer(EntityPlayer par1EntityPlayer) {
         return this.worldObj.getTileEntity(this.xCoord, this.yCoord, this.zCoord) != this
-                ? false
-                : par1EntityPlayer.getDistanceSq((double) this.xCoord + 0.5D,
-                        (double) this.yCoord + 0.5D,
-                        (double) this.zCoord + 0.5D) <= 64.0D;
+            ? false
+            : par1EntityPlayer.getDistanceSq(
+                  (double) this.xCoord + 0.5D,
+                  (double) this.yCoord + 0.5D,
+                  (double) this.zCoord + 0.5D
+              ) <= 64.0D;
     }
 
     @Override
@@ -63,8 +66,8 @@ public abstract class TInventory
     @Override
     public void setInventorySlotContents(int par1, ItemStack par2ItemStack) {
         this.containingItems[par1] = par2ItemStack;
-        if (par2ItemStack != null &&
-                par2ItemStack.stackSize > this.getInventoryStackLimit()) {
+        if (par2ItemStack != null
+            && par2ItemStack.stackSize > this.getInventoryStackLimit()) {
             par2ItemStack.stackSize = this.getInventoryStackLimit();
         }
     }
@@ -75,12 +78,10 @@ public abstract class TInventory
     }
 
     @Override
-    public void openInventory() {
-    }
+    public void openInventory() {}
 
     @Override
-    public void closeInventory() {
-    }
+    public void closeInventory() {}
 
     @Override
     public boolean hasCustomInventoryName() {
@@ -95,10 +96,10 @@ public abstract class TInventory
     @Override
     public boolean isItemValidForSlot(int slot, ItemStack itemStack) {
         return this.getStackInSlot(slot) == null
-                ? true
-                : (this.getStackInSlot(slot).stackSize + 1 <= 64
-                        ? this.getStackInSlot(slot).isItemEqual(itemStack)
-                        : false);
+            ? true
+            : (this.getStackInSlot(slot).stackSize + 1 <= 64
+                   ? this.getStackInSlot(slot).isItemEqual(itemStack)
+                   : false);
     }
 
     public void incrStackSize(int slot, ItemStack itemStack) {

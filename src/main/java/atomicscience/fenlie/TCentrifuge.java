@@ -24,8 +24,7 @@ import universalelectricity.core.vector.VectorHelper;
 import universalelectricity.prefab.implement.IRotatable;
 
 public class TCentrifuge
-        extends TInventory implements ISidedInventory, IFluidHandler, IRotatable {
-
+    extends TInventory implements ISidedInventory, IFluidHandler, IRotatable {
     public static final int SHI_JIAN = 2400;
     public static final float DIAN = 500.0F;
     public int smeltingTicks = 0;
@@ -39,8 +38,8 @@ public class TCentrifuge
     @Override
     public ElectricityPack getRequest() {
         return this.canWork()
-                ? new ElectricityPack(500.0D / this.getVoltage(), this.getVoltage())
-                : new ElectricityPack();
+            ? new ElectricityPack(500.0D / this.getVoltage(), this.getVoltage())
+            : new ElectricityPack();
     }
 
     @Override
@@ -51,16 +50,22 @@ public class TCentrifuge
                 for (int i$ = 0; i$ < 6; ++i$) {
                     ForgeDirection direction = ForgeDirection.getOrientation(i$);
                     TileEntity tileEntity = VectorHelper.getTileEntityFromSide(
-                            this.worldObj, new Vector3(this), direction);
-                    if (tileEntity instanceof IFluidHandler &&
-                            tileEntity.getClass() != this.getClass()) {
-                        int requiredLiquid = this.gasTank.getCapacity() - this.gasTank.getFluidAmount();
-                        FluidStack drained = ((IFluidHandler) tileEntity)
-                                .drain(
-                                        direction.getOpposite(),
-                                        new FluidStack(AtomicScience.FLUID_URANIUM_HEXAFLOURIDE,
-                                                requiredLiquid),
-                                        true);
+                        this.worldObj, new Vector3(this), direction
+                    );
+                    if (tileEntity instanceof IFluidHandler
+                        && tileEntity.getClass() != this.getClass()) {
+                        int requiredLiquid
+                            = this.gasTank.getCapacity() - this.gasTank.getFluidAmount();
+                        FluidStack drained
+                            = ((IFluidHandler) tileEntity)
+                                  .drain(
+                                      direction.getOpposite(),
+                                      new FluidStack(
+                                          AtomicScience.FLUID_URANIUM_HEXAFLOURIDE,
+                                          requiredLiquid
+                                      ),
+                                      true
+                                  );
                         this.gasTank.fill(drained, true);
                     }
                 }
@@ -68,7 +73,8 @@ public class TCentrifuge
 
             if (this.canWork()) {
                 super.wattsReceived += ElectricItemHelper.dechargeItem(
-                        super.containingItems[0], 500.0D, this.getVoltage());
+                    super.containingItems[0], 500.0D, this.getVoltage()
+                );
                 if (super.wattsReceived >= 500.0D) {
                     if (this.smeltingTicks == 0) {
                         this.smeltingTicks = 2400;
@@ -97,13 +103,12 @@ public class TCentrifuge
     }
 
     @Override
-    public void onDataPacket(NetworkManager nm,
-            S35PacketUpdateTileEntity packet) {
+    public void onDataPacket(NetworkManager nm, S35PacketUpdateTileEntity packet) {
         NBTTagCompound nbt = packet.func_148857_g();
         this.smeltingTicks = nbt.getInteger("shiJian");
-        this.gasTank.setFluid(
-                new FluidStack(AtomicScience.FLUID_URANIUM_HEXAFLOURIDE,
-                        nbt.getInteger("fluidAmount")));
+        this.gasTank.setFluid(new FluidStack(
+            AtomicScience.FLUID_URANIUM_HEXAFLOURIDE, nbt.getInteger("fluidAmount")
+        ));
         super.disabledTicks = nbt.getInteger("disabledTicks");
     }
 
@@ -114,8 +119,9 @@ public class TCentrifuge
         nbt.setInteger("fluidAmount", this.gasTank.getFluidAmount());
         nbt.setInteger("disabledTicks", super.disabledTicks);
 
-        return new S35PacketUpdateTileEntity(this.xCoord, this.yCoord, this.zCoord,
-                this.getBlockMetadata(), nbt);
+        return new S35PacketUpdateTileEntity(
+            this.xCoord, this.yCoord, this.zCoord, this.getBlockMetadata(), nbt
+        );
     }
 
     @Override
@@ -126,12 +132,11 @@ public class TCentrifuge
     }
 
     @Override
-    public void closeInventory() {
-    }
+    public void closeInventory() {}
 
     public boolean canWork() {
-        return !this.isDisabled() && this.gasTank.getFluidAmount() != 0 &&
-                this.gasTank.getFluidAmount() >= AtomicScience.URANIUM_HEXAFLOURIDE_RATIO;
+        return !this.isDisabled() && this.gasTank.getFluidAmount() != 0
+            && this.gasTank.getFluidAmount() >= AtomicScience.URANIUM_HEXAFLOURIDE_RATIO;
     }
 
     public void work() {
@@ -170,15 +175,15 @@ public class TCentrifuge
 
     @Override
     public boolean canFill(ForgeDirection arg0, Fluid fluid) {
-        return AtomicScience.FLUID_URANIUM_HEXAFLOURIDE == fluid &&
-                this.gasTank.getCapacity() != this.gasTank.getFluidAmount();
+        return AtomicScience.FLUID_URANIUM_HEXAFLOURIDE == fluid
+            && this.gasTank.getCapacity() != this.gasTank.getFluidAmount();
     }
 
     @Override
     public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
         return AtomicScience.FLUID_URANIUM_HEXAFLOURIDE == resource.getFluid()
-                ? this.gasTank.fill(resource, doFill)
-                : 0;
+            ? this.gasTank.fill(resource, doFill)
+            : 0;
     }
 
     @Override

@@ -10,20 +10,32 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
 public class BChemicalExtractor extends BBaseRotatable {
-
     public BChemicalExtractor() {
         super("chemicalExtractor");
     }
 
     @Override
-    public boolean onMachineActivated(World par1World, int x, int y, int z,
-            EntityPlayer par5EntityPlayer, int side,
-            float hitX, float hitY, float hitZ) {
+    public boolean onMachineActivated(
+        World par1World,
+        int x,
+        int y,
+        int z,
+        EntityPlayer par5EntityPlayer,
+        int side,
+        float hitX,
+        float hitY,
+        float hitZ
+    ) {
         par1World.getBlockMetadata(x, y, z);
         if (!par1World.isRemote) {
-            par5EntityPlayer.openGui(AtomicScience.instance,
-                    CommonProxy.GuiType.CHEMICAL_EXTRACTOR.ordinal(),
-                    par1World, x, y, z);
+            par5EntityPlayer.openGui(
+                AtomicScience.instance,
+                CommonProxy.GuiType.CHEMICAL_EXTRACTOR.ordinal(),
+                par1World,
+                x,
+                y,
+                z
+            );
         }
         return true;
     }

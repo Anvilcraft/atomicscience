@@ -24,9 +24,10 @@ public class BFunnel extends BBase {
     public void registerBlockIcons(IIconRegister iconRegister) {
         super.registerBlockIcons(iconRegister);
         this.iconTop = iconRegister.registerIcon(
-                this.getUnlocalizedName().replace("tile.", "") + "_top");
-        this.blockIcon = iconRegister.registerIcon(
-                this.getUnlocalizedName().replace("tile.", ""));
+            this.getUnlocalizedName().replace("tile.", "") + "_top"
+        );
+        this.blockIcon
+            = iconRegister.registerIcon(this.getUnlocalizedName().replace("tile.", ""));
     }
 
     @Override

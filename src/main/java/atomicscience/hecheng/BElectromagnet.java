@@ -9,27 +9,31 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 
 public class BElectromagnet extends BBase implements IElectromagnet {
-  protected IIcon iconTop;
+    protected IIcon iconTop;
 
-  public BElectromagnet() { this("electromagnet"); }
+    public BElectromagnet() {
+        this("electromagnet");
+    }
 
-  public BElectromagnet(String id) { super(id); }
+    public BElectromagnet(String id) {
+        super(id);
+    }
 
-  @Override
-  public IIcon getIcon(int side, int metadata) {
-    return side != 0 && side != 1 ? this.blockIcon : this.iconTop;
-  }
+    @Override
+    public IIcon getIcon(int side, int metadata) {
+        return side != 0 && side != 1 ? this.blockIcon : this.iconTop;
+    }
 
-  @Override
-  @SideOnly(Side.CLIENT)
-  public void registerBlockIcons(IIconRegister iconRegister) {
-    super.registerBlockIcons(iconRegister);
-    this.iconTop = iconRegister.registerIcon("atomicscience:electromagnet_top");
-    this.blockIcon = iconRegister.registerIcon("atomicscience:electromagnet");
-  }
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void registerBlockIcons(IIconRegister iconRegister) {
+        super.registerBlockIcons(iconRegister);
+        this.iconTop = iconRegister.registerIcon("atomicscience:electromagnet_top");
+        this.blockIcon = iconRegister.registerIcon("atomicscience:electromagnet");
+    }
 
-  @Override
-  public boolean isRunning(World world, int x, int y, int z) {
-    return true;
-  }
+    @Override
+    public boolean isRunning(World world, int x, int y, int z) {
+        return true;
+    }
 }

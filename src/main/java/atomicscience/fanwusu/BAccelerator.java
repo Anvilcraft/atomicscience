@@ -11,35 +11,49 @@ import net.minecraft.world.World;
 import universalelectricity.core.UniversalElectricity;
 
 public class BAccelerator extends BBaseRotatable implements IElectromagnet {
-
-  public BAccelerator() { super("accelerator", UniversalElectricity.machine); }
-
-  @Override
-  public boolean onMachineActivated(World par1World, int x, int y, int z,
-                                    EntityPlayer par5EntityPlayer, int side,
-                                    float hitX, float hitY, float hitZ) {
-    par1World.getBlockMetadata(x, y, z);
-    if (!par1World.isRemote) {
-      par5EntityPlayer.openGui(AtomicScience.instance,
-                               CommonProxy.GuiType.ACCELERATOR.ordinal(),
-                               par1World, x, y, z);
+    public BAccelerator() {
+        super("accelerator", UniversalElectricity.machine);
     }
 
-    return true;
-  }
+    @Override
+    public boolean onMachineActivated(
+        World par1World,
+        int x,
+        int y,
+        int z,
+        EntityPlayer par5EntityPlayer,
+        int side,
+        float hitX,
+        float hitY,
+        float hitZ
+    ) {
+        par1World.getBlockMetadata(x, y, z);
+        if (!par1World.isRemote) {
+            par5EntityPlayer.openGui(
+                AtomicScience.instance,
+                CommonProxy.GuiType.ACCELERATOR.ordinal(),
+                par1World,
+                x,
+                y,
+                z
+            );
+        }
 
-  @Override
-  public TileEntity createNewTileEntity(World world, int meta) {
-    return new TAccelerator();
-  }
+        return true;
+    }
 
-  @Override
-  public void registerBlockIcons(IIconRegister iconRegister) {
-    this.blockIcon = iconRegister.registerIcon("atomicscience:accelerator");
-  }
+    @Override
+    public TileEntity createNewTileEntity(World world, int meta) {
+        return new TAccelerator();
+    }
 
-  @Override
-  public boolean isRunning(World world, int x, int y, int z) {
-    return true;
-  }
+    @Override
+    public void registerBlockIcons(IIconRegister iconRegister) {
+        this.blockIcon = iconRegister.registerIcon("atomicscience:accelerator");
+    }
+
+    @Override
+    public boolean isRunning(World world, int x, int y, int z) {
+        return true;
+    }
 }

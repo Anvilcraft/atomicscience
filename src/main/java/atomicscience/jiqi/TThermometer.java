@@ -26,20 +26,25 @@ public class TThermometer extends TileEntityDisableable {
             this.prevTemp = this.temp;
             if (super.ticks % 10L == 0L) {
                 this.temp = 0.0F;
-                if (this.linkedTileCoords != null &&
-                        this.linkedTileCoords.getTileEntity(this.worldObj) instanceof ITemperature) {
-                    this.temp = ((ITemperature) this.linkedTileCoords.getTileEntity(this.worldObj))
-                            .getTemperature();
+                if (this.linkedTileCoords != null
+                    && this.linkedTileCoords.getTileEntity(this.worldObj)
+                            instanceof ITemperature) {
+                    this.temp = ((ITemperature
+                                 ) this.linkedTileCoords.getTileEntity(this.worldObj))
+                                    .getTemperature();
                 } else {
                     for (int i = 0; i < 6; ++i) {
                         Vector3 offsetPos = new Vector3(this);
-                        offsetPos.modifyPositionFromSide(ForgeDirection.getOrientation(i));
+                        offsetPos.modifyPositionFromSide(ForgeDirection.getOrientation(i)
+                        );
                         Block fangGe = offsetPos.getBlock(this.worldObj);
                         if (fangGe instanceof ITemperature) {
                             this.temp += ((ITemperature) fangGe).getTemperature();
                         } else {
-                            TileEntity tileEntity = offsetPos.getTileEntity(this.worldObj);
-                            if (tileEntity != null && tileEntity instanceof ITemperature) {
+                            TileEntity tileEntity
+                                = offsetPos.getTileEntity(this.worldObj);
+                            if (tileEntity != null
+                                && tileEntity instanceof ITemperature) {
                                 this.temp += ((ITemperature) tileEntity).getTemperature();
                             }
                         }
@@ -47,10 +52,12 @@ public class TThermometer extends TileEntityDisableable {
                 }
 
                 this.worldObj.notifyBlocksOfNeighborChange(
-                        this.xCoord, this.yCoord, this.zCoord, AtomicScience.bThermometer);
+                    this.xCoord, this.yCoord, this.zCoord, AtomicScience.bThermometer
+                );
                 if (this.prevTemp != this.temp) {
-                    this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord,
-                            this.zCoord);
+                    this.worldObj.markBlockForUpdate(
+                        this.xCoord, this.yCoord, this.zCoord
+                    );
                 }
             }
         }
@@ -62,13 +69,13 @@ public class TThermometer extends TileEntityDisableable {
         nbt.setFloat("temp", this.temp);
         nbt.setInteger("warningTemp", this.warningTemp);
 
-        return new S35PacketUpdateTileEntity(this.xCoord, this.yCoord, this.zCoord,
-                this.getBlockMetadata(), nbt);
+        return new S35PacketUpdateTileEntity(
+            this.xCoord, this.yCoord, this.zCoord, this.getBlockMetadata(), nbt
+        );
     }
 
     @Override
-    public void onDataPacket(NetworkManager arg0,
-            S35PacketUpdateTileEntity arg1) {
+    public void onDataPacket(NetworkManager arg0, S35PacketUpdateTileEntity arg1) {
         NBTTagCompound nbt = arg1.func_148857_g();
         this.temp = nbt.getFloat("temp");
         this.warningTemp = nbt.getInteger("warningTemp");
@@ -88,7 +95,8 @@ public class TThermometer extends TileEntityDisableable {
     public void readFromNBT(NBTTagCompound nbt) {
         super.readFromNBT(nbt);
         this.warningTemp = nbt.getInteger("warningTemp");
-        this.linkedTileCoords = Vector3.readFromNBT(nbt.getCompoundTag("linkedTileCoords"));
+        this.linkedTileCoords
+            = Vector3.readFromNBT(nbt.getCompoundTag("linkedTileCoords"));
     }
 
     @Override
@@ -96,8 +104,9 @@ public class TThermometer extends TileEntityDisableable {
         super.writeToNBT(nbt);
         nbt.setInteger("warningTemp", this.warningTemp);
         if (this.linkedTileCoords != null) {
-            nbt.setTag("linkedTileCoords",
-                    this.linkedTileCoords.writeToNBT(new NBTTagCompound()));
+            nbt.setTag(
+                "linkedTileCoords", this.linkedTileCoords.writeToNBT(new NBTTagCompound())
+            );
         }
     }
 

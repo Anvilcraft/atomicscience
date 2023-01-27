@@ -1,5 +1,7 @@
 package atomicscience.fenlie;
 
+import java.util.List;
+
 import atomicscience.AtomicScience;
 import atomicscience.MegaTNTExplusion;
 import atomicscience.api.IFissileMaterial;
@@ -9,7 +11,6 @@ import atomicscience.api.poison.PoisonRadiation;
 import atomicscience.wujian.ItBreederFuel;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import java.util.List;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -34,8 +35,7 @@ import universalelectricity.core.vector.Vector3;
 import universalelectricity.prefab.tile.TileEntityDisableable;
 
 public class TFissionReactor extends TileEntityDisableable
-        implements IInventory, ITemperature, IReactor, IFluidHandler {
-
+    implements IInventory, ITemperature, IReactor, IFluidHandler {
     public static final int BAN_JING = 2;
     public static final int WEN_DU = 2000;
     public float wenDu = 0.0F;
@@ -56,37 +56,48 @@ public class TFissionReactor extends TileEntityDisableable
         }
 
         if (!this.isDisabled()) {
-            if (this.cachedZhuYao != this && this.getStackInSlot(0) != null &&
-                    this.cachedZhuYao.getStackInSlot(0) == null) {
+            if (this.cachedZhuYao != this && this.getStackInSlot(0) != null
+                && this.cachedZhuYao.getStackInSlot(0) == null) {
                 this.cachedZhuYao.setInventorySlotContents(0, this.getStackInSlot(0));
                 this.setInventorySlotContents(0, (ItemStack) null);
             }
 
             ItemStack fissileFuel = this.cachedZhuYao.getStackInSlot(0);
             int i;
-            if (fissileFuel != null && fissileFuel.getItem() instanceof IFissileMaterial) {
+            if (fissileFuel != null
+                && fissileFuel.getItem() instanceof IFissileMaterial) {
                 i = ((IFissileMaterial) fissileFuel.getItem()).onFissile(this);
                 if (!this.worldObj.isRemote) {
                     if (i == 0) {
-                        fissileFuel.setItemDamage(Math.min(fissileFuel.getItemDamage() + 1,
-                                fissileFuel.getMaxDamage()));
+                        fissileFuel.setItemDamage(Math.min(
+                            fissileFuel.getItemDamage() + 1, fissileFuel.getMaxDamage()
+                        ));
                         if (fissileFuel.getItemDamage() >= fissileFuel.getMaxDamage()) {
-                            this.cachedZhuYao.setInventorySlotContents(0, (ItemStack) null);
+                            this.cachedZhuYao.setInventorySlotContents(
+                                0, (ItemStack) null
+                            );
                         }
                     } else if (i == 2) {
                         fissileFuel.setItemDamage(
-                                Math.max(fissileFuel.getItemDamage() - 1, 0));
+                            Math.max(fissileFuel.getItemDamage() - 1, 0)
+                        );
                     }
                 }
 
-                if (super.ticks % 20L == 0L &&
-                        (double) this.worldObj.rand.nextFloat() > 0.65D) {
-                    List<EntityLivingBase> entitiesInRange = this.worldObj.getEntitiesWithinAABB(
+                if (super.ticks % 20L == 0L
+                    && (double) this.worldObj.rand.nextFloat() > 0.65D) {
+                    List<EntityLivingBase> entitiesInRange
+                        = this.worldObj.getEntitiesWithinAABB(
                             EntityLivingBase.class,
                             AxisAlignedBB.getBoundingBox(
-                                    (double) (this.xCoord - 4), (double) (this.yCoord - 4),
-                                    (double) (this.xCoord - 4), (double) (this.xCoord + 4),
-                                    (double) (this.yCoord + 4), (double) (this.xCoord + 4)));
+                                (double) (this.xCoord - 4),
+                                (double) (this.yCoord - 4),
+                                (double) (this.xCoord - 4),
+                                (double) (this.xCoord + 4),
+                                (double) (this.yCoord + 4),
+                                (double) (this.xCoord + 4)
+                            )
+                        );
 
                     for (EntityLivingBase entity : entitiesInRange) {
                         PoisonRadiation.INSTANCE.poisonEntity(new Vector3(this), entity);
@@ -95,38 +106,38 @@ public class TFissionReactor extends TileEntityDisableable
 
                 if ((double) this.worldObj.rand.nextFloat() > 0.5D) {
                     this.wasteTank.fill(
-                            new FluidStack(AtomicScience.FLUID_TOXIC_WASTE, 1), true);
+                        new FluidStack(AtomicScience.FLUID_TOXIC_WASTE, 1), true
+                    );
                 }
             }
 
             if (this.wenDu > 2000.0F) {
                 this.meltDown();
-            } else if (this.wenDu > 100.0F &&
-                    (fissileFuel == null ||
-                            !(fissileFuel.getItem() instanceof ItBreederFuel))) {
+            } else if (this.wenDu > 100.0F && (fissileFuel == null || !(fissileFuel.getItem() instanceof ItBreederFuel))) {
                 for (int x = -2; x <= 2; ++x) {
                     for (int z = -2; z <= 2; ++z) {
                         Vector3 offsetPos = new Vector3(this);
                         offsetPos.add(new Vector3((double) x, 0.0D, (double) z));
                         Block offsetBlock = this.worldObj.getBlock(
-                                offsetPos.intX(), offsetPos.intY(), offsetPos.intZ());
+                            offsetPos.intX(), offsetPos.intY(), offsetPos.intZ()
+                        );
                         if (offsetBlock != Blocks.water) {
-                            if (this.isOverToxic() && !this.worldObj.isRemote &&
-                                    (double) this.worldObj.rand.nextFloat() > 0.999D) {
+                            if (this.isOverToxic() && !this.worldObj.isRemote
+                                && (double) this.worldObj.rand.nextFloat() > 0.999D) {
                                 if (offsetBlock == Blocks.grass) {
-                                    offsetPos.setBlock(this.worldObj,
-                                            AtomicScience.blockRadioactive);
+                                    offsetPos.setBlock(
+                                        this.worldObj, AtomicScience.blockRadioactive
+                                    );
                                 } else if (offsetBlock != Blocks.air) {
                                     offsetPos.setBlock(
-                                            this.worldObj,
-                                            this.wasteTank.getFluid().getFluid().getBlock());
+                                        this.worldObj,
+                                        this.wasteTank.getFluid().getFluid().getBlock()
+                                    );
                                 }
 
                                 this.wasteTank.drain(1000, true);
                             }
-                        } else if (super.ticks %
-                                (long) ((int) Math.max(
-                                        40.0F - this.wenDu / 2000.0F * 40.0F, 2.0F)) == 0L) {
+                        } else if (super.ticks % (long) ((int) Math.max(40.0F - this.wenDu / 2000.0F * 40.0F, 2.0F)) == 0L) {
                             AtomicScience.boilWater(this.worldObj, offsetPos, 3, 8);
                             this.wenDu = (float) ((double) this.wenDu - 0.2D);
                         }
@@ -136,8 +147,8 @@ public class TFissionReactor extends TileEntityDisableable
 
             for (int direction = 2; direction < 6; ++direction) {
                 Vector3 neighborPos = new Vector3(this);
-                neighborPos.modifyPositionFromSide(
-                        ForgeDirection.getOrientation(direction));
+                neighborPos.modifyPositionFromSide(ForgeDirection.getOrientation(direction
+                ));
                 if (neighborPos.getBlock(this.worldObj) == AtomicScience.bControlRod) {
                     this.setTemperature(this.getTemperature() - 0.5F);
                 }
@@ -155,29 +166,33 @@ public class TFissionReactor extends TileEntityDisableable
 
     public boolean isOverToxic() {
         return AtomicScience.ALLOW_TOXIC_WASTE &&
-        // TODO >=?
-                this.wasteTank.getFluidAmount() > this.wasteTank.getCapacity();
+            // TODO >=?
+            this.wasteTank.getFluidAmount() > this.wasteTank.getCapacity();
     }
-
 
     // TODO: WTF
     //@Override
     public void updatePositionStatus() {
         boolean top = (new Vector3(this))
-                .add(new Vector3(0.0D, 1.0D, 0.0D))
-                .getTileEntity(this.worldObj) instanceof TFissionReactor;
+                          .add(new Vector3(0.0D, 1.0D, 0.0D))
+                          .getTileEntity(this.worldObj)
+                          instanceof TFissionReactor;
         boolean bottom = (new Vector3(this))
-                .add(new Vector3(0.0D, -1.0D, 0.0D))
-                .getTileEntity(this.worldObj) instanceof TFissionReactor;
+                             .add(new Vector3(0.0D, -1.0D, 0.0D))
+                             .getTileEntity(this.worldObj)
+                             instanceof TFissionReactor;
         if (top && bottom) {
-            this.worldObj.setBlockMetadataWithNotify(this.xCoord, this.yCoord,
-                    this.zCoord, 1, 3);
+            this.worldObj.setBlockMetadataWithNotify(
+                this.xCoord, this.yCoord, this.zCoord, 1, 3
+            );
         } else if (top) {
-            this.worldObj.setBlockMetadataWithNotify(this.xCoord, this.yCoord,
-                    this.zCoord, 0, 3);
+            this.worldObj.setBlockMetadataWithNotify(
+                this.xCoord, this.yCoord, this.zCoord, 0, 3
+            );
         } else {
-            this.worldObj.setBlockMetadataWithNotify(this.xCoord, this.yCoord,
-                    this.zCoord, 2, 3);
+            this.worldObj.setBlockMetadataWithNotify(
+                this.xCoord, this.yCoord, this.zCoord, 2, 3
+            );
         }
     }
 
@@ -204,7 +219,8 @@ public class TFissionReactor extends TileEntityDisableable
         int height = 0;
         Vector3 checkPosition = new Vector3(this);
 
-        for (Object tile = this; tile instanceof TFissionReactor; tile = checkPosition.getTileEntity(this.worldObj)) {
+        for (Object tile = this; tile instanceof TFissionReactor;
+             tile = checkPosition.getTileEntity(this.worldObj)) {
             ++checkPosition.y;
             ++height;
         }
@@ -216,25 +232,30 @@ public class TFissionReactor extends TileEntityDisableable
     public Packet getDescriptionPacket() {
         NBTTagCompound nbt = new NBTTagCompound();
         this.writeToNBT(nbt);
-        return new S35PacketUpdateTileEntity(this.xCoord, this.yCoord, this.zCoord,
-                this.getBlockMetadata(), nbt);
+        return new S35PacketUpdateTileEntity(
+            this.xCoord, this.yCoord, this.zCoord, this.getBlockMetadata(), nbt
+        );
     }
 
     private void meltDown() {
         if (!this.worldObj.isRemote) {
             this.setInventorySlotContents(0, (ItemStack) null);
-            MegaTNTExplusion baoZha = new MegaTNTExplusion(this.worldObj, (Entity) null, (double) this.xCoord,
-                    (double) this.yCoord, (double) this.zCoord, 9.0F);
+            MegaTNTExplusion baoZha = new MegaTNTExplusion(
+                this.worldObj,
+                (Entity) null,
+                (double) this.xCoord,
+                (double) this.yCoord,
+                (double) this.zCoord,
+                9.0F
+            );
             baoZha.doExplosionA();
             baoZha.doExplosionB(true);
-            this.worldObj.setBlock(this.xCoord, this.yCoord, this.zCoord,
-                    Blocks.lava);
+            this.worldObj.setBlock(this.xCoord, this.yCoord, this.zCoord, Blocks.lava);
         }
     }
 
     @Override
-    public void onDataPacket(NetworkManager arg0,
-            S35PacketUpdateTileEntity packet) {
+    public void onDataPacket(NetworkManager arg0, S35PacketUpdateTileEntity packet) {
         this.readFromNBT(packet.func_148857_g());
     }
 
@@ -323,8 +344,8 @@ public class TFissionReactor extends TileEntityDisableable
     @Override
     public void setInventorySlotContents(int par1, ItemStack par2ItemStack) {
         this.containingItems[par1] = par2ItemStack;
-        if (par2ItemStack != null &&
-                par2ItemStack.stackSize > this.getInventoryStackLimit()) {
+        if (par2ItemStack != null
+            && par2ItemStack.stackSize > this.getInventoryStackLimit()) {
             par2ItemStack.stackSize = this.getInventoryStackLimit();
         }
 
@@ -339,19 +360,19 @@ public class TFissionReactor extends TileEntityDisableable
     @Override
     public boolean isUseableByPlayer(EntityPlayer par1EntityPlayer) {
         return this.worldObj.getTileEntity(this.xCoord, this.yCoord, this.zCoord) != this
-                ? false
-                : par1EntityPlayer.getDistanceSq((double) this.xCoord + 0.5D,
-                        (double) this.yCoord + 0.5D,
-                        (double) this.zCoord + 0.5D) <= 64.0D;
+            ? false
+            : par1EntityPlayer.getDistanceSq(
+                  (double) this.xCoord + 0.5D,
+                  (double) this.yCoord + 0.5D,
+                  (double) this.zCoord + 0.5D
+              ) <= 64.0D;
     }
 
     @Override
-    public void openInventory() {
-    }
+    public void openInventory() {}
 
     @Override
-    public void closeInventory() {
-    }
+    public void closeInventory() {}
 
     @Override
     public void onDisable(int duration) {
@@ -375,10 +396,9 @@ public class TFissionReactor extends TileEntityDisableable
 
     @Override
     public boolean isItemValidForSlot(int slotID, ItemStack itemStack) {
-        return this.cachedZhuYao != null &&
-                this.cachedZhuYao.getStackInSlot(0) == null
-                        ? itemStack.getItem() instanceof IFissileMaterial
-                        : false;
+        return this.cachedZhuYao != null && this.cachedZhuYao.getStackInSlot(0) == null
+            ? itemStack.getItem() instanceof IFissileMaterial
+            : false;
     }
 
     @Override
@@ -393,8 +413,8 @@ public class TFissionReactor extends TileEntityDisableable
 
     @Override
     public boolean canDrain(ForgeDirection arg0, Fluid arg1) {
-        return arg1 == AtomicScience.FLUID_TOXIC_WASTE &&
-                this.wasteTank.getFluidAmount() > 0;
+        return arg1 == AtomicScience.FLUID_TOXIC_WASTE
+            && this.wasteTank.getFluidAmount() > 0;
     }
 
     @Override
@@ -403,11 +423,10 @@ public class TFissionReactor extends TileEntityDisableable
     }
 
     @Override
-    public FluidStack drain(ForgeDirection from, FluidStack fluid,
-            boolean doDrain) {
+    public FluidStack drain(ForgeDirection from, FluidStack fluid, boolean doDrain) {
         return fluid.getFluid() == AtomicScience.FLUID_TOXIC_WASTE
-                ? this.drain(from, fluid.amount, doDrain)
-                : null;
+            ? this.drain(from, fluid.amount, doDrain)
+            : null;
     }
 
     @Override
@@ -419,7 +438,7 @@ public class TFissionReactor extends TileEntityDisableable
     @SideOnly(Side.CLIENT)
     public AxisAlignedBB getRenderBoundingBox() {
         return this.cachedZhuYao == this ? TileEntity.INFINITE_EXTENT_AABB
-                : super.getRenderBoundingBox();
+                                         : super.getRenderBoundingBox();
     }
 
     @Override

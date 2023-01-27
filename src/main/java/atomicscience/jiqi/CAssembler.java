@@ -12,8 +12,7 @@ import net.minecraft.item.ItemStack;
 public class CAssembler extends Container {
     private TAtomicAssembler tileEntity;
 
-    public CAssembler(InventoryPlayer par1InventoryPlayer,
-            TAtomicAssembler tileEntity) {
+    public CAssembler(InventoryPlayer par1InventoryPlayer, TAtomicAssembler tileEntity) {
         this.tileEntity = tileEntity;
         this.addSlotToContainer(new TileEntityFilteredSlot(tileEntity, 0, 80, 40));
         this.addSlotToContainer(new TileEntityFilteredSlot(tileEntity, 1, 53, 56));
@@ -26,15 +25,19 @@ public class CAssembler extends Container {
         int var3;
         for (var3 = 0; var3 < 3; ++var3) {
             for (int var4 = 0; var4 < 9; ++var4) {
-                this.addSlotToContainer(new Slot(par1InventoryPlayer,
-                        var4 + var3 * 9 + 9, 8 + var4 * 18,
-                        148 + var3 * 18));
+                this.addSlotToContainer(new Slot(
+                    par1InventoryPlayer,
+                    var4 + var3 * 9 + 9,
+                    8 + var4 * 18,
+                    148 + var3 * 18
+                ));
             }
         }
 
         for (var3 = 0; var3 < 9; ++var3) {
             this.addSlotToContainer(
-                    new Slot(par1InventoryPlayer, var3, 8 + var3 * 18, 206));
+                new Slot(par1InventoryPlayer, var3, 8 + var3 * 18, 206)
+            );
         }
 
         this.tileEntity.players.add(par1InventoryPlayer.player);
@@ -50,8 +53,7 @@ public class CAssembler extends Container {
         return this.tileEntity.isUseableByPlayer(par1EntityPlayer);
     }
 
-    public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer,
-            int par1) {
+    public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int par1) {
         ItemStack var2 = null;
         Slot var3 = (Slot) super.inventorySlots.get(par1);
         if (var3 != null && var3.getHasStack()) {
@@ -62,9 +64,7 @@ public class CAssembler extends Container {
                     if (!this.mergeItemStack(itemStack, 0, 6, false)) {
                         return null;
                     }
-                } else if (!this.getSlot(6).getHasStack() &&
-                        itemStack.isStackable() &&
-                        !this.mergeItemStack(itemStack, 6, 7, false)) {
+                } else if (!this.getSlot(6).getHasStack() && itemStack.isStackable() && !this.mergeItemStack(itemStack, 6, 7, false)) {
                     return null;
                 }
             } else if (!this.mergeItemStack(itemStack, 7, 43, false)) {

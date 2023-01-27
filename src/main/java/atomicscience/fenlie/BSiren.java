@@ -1,8 +1,9 @@
 package atomicscience.fenlie;
 
+import java.util.Random;
+
 import atomicscience.SoundManager;
 import atomicscience.jiqi.BBase;
-import java.util.Random;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
@@ -21,14 +22,12 @@ public class BSiren extends BBase {
     }
 
     @Override
-    public void onNeighborBlockChange(World par1World, int x, int y, int z,
-            Block block) {
+    public void onNeighborBlockChange(World par1World, int x, int y, int z, Block block) {
         par1World.scheduleBlockUpdate(x, y, z, this, 1);
     }
 
     @Override
-    public void updateTick(World worldObj, int x, int y, int z,
-            Random par5Random) {
+    public void updateTick(World worldObj, int x, int y, int z, Random par5Random) {
         int metadata = worldObj.getBlockMetadata(x, y, z);
         if (worldObj.getBlockPowerInput(x, y, z) > 0) {
             float volume = 0.5F;
@@ -42,17 +41,30 @@ public class BSiren extends BBase {
                 }
             }
 
-            worldObj.playSoundEffect((double) x, (double) y, (double) z,
-                    SoundManager.ALARM, volume,
-                    1.0F - 0.18F * ((float) metadata / 15.0F));
+            worldObj.playSoundEffect(
+                (double) x,
+                (double) y,
+                (double) z,
+                SoundManager.ALARM,
+                volume,
+                1.0F - 0.18F * ((float) metadata / 15.0F)
+            );
             worldObj.scheduleBlockUpdate(x, y, z, this, 30);
         }
     }
 
     @Override
-    public boolean onUseWrench(World par1World, int x, int y, int z,
-            EntityPlayer par5EntityPlayer, int side,
-            float hitX, float hitY, float hitZ) {
+    public boolean onUseWrench(
+        World par1World,
+        int x,
+        int y,
+        int z,
+        EntityPlayer par5EntityPlayer,
+        int side,
+        float hitX,
+        float hitY,
+        float hitZ
+    ) {
         int metadata = par1World.getBlockMetadata(x, y, z) + 1;
         if (metadata < 0) {
             metadata = 15;
@@ -63,9 +75,17 @@ public class BSiren extends BBase {
     }
 
     @Override
-    public boolean onSneakUseWrench(World par1World, int x, int y, int z,
-            EntityPlayer par5EntityPlayer, int side,
-            float hitX, float hitY, float hitZ) {
+    public boolean onSneakUseWrench(
+        World par1World,
+        int x,
+        int y,
+        int z,
+        EntityPlayer par5EntityPlayer,
+        int side,
+        float hitX,
+        float hitY,
+        float hitZ
+    ) {
         int metadata = par1World.getBlockMetadata(x, y, z) - 1;
         if (metadata > 15) {
             metadata = 0;

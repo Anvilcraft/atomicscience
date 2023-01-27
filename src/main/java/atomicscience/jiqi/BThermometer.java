@@ -32,18 +32,28 @@ public class BThermometer extends BBase {
     }
 
     @Override
-    public boolean onMachineActivated(World world, int x, int y, int z,
-            EntityPlayer entityPlayer, int side,
-            float hitX, float hitY, float hitZ) {
+    public boolean onMachineActivated(
+        World world,
+        int x,
+        int y,
+        int z,
+        EntityPlayer entityPlayer,
+        int side,
+        float hitX,
+        float hitY,
+        float hitZ
+    ) {
         TThermometer tileEntity = (TThermometer) world.getTileEntity(x, y, z);
-        if (entityPlayer.getCurrentEquippedItem() != null &&
-                entityPlayer.getCurrentEquippedItem().getItem() instanceof ItThermometer) {
-            Vector3 savedCoords = ((ItThermometer) entityPlayer.getCurrentEquippedItem().getItem())
-                    .getSavedCoord(entityPlayer.getCurrentEquippedItem());
+        if (entityPlayer.getCurrentEquippedItem() != null
+            && entityPlayer.getCurrentEquippedItem().getItem() instanceof ItThermometer) {
+            Vector3 savedCoords
+                = ((ItThermometer) entityPlayer.getCurrentEquippedItem().getItem())
+                      .getSavedCoord(entityPlayer.getCurrentEquippedItem());
             if (tileEntity.setLinkTile(savedCoords)) {
                 if (world.isRemote) {
                     entityPlayer.addChatMessage(
-                            new ChatComponentText("Linked thermal data."));
+                        new ChatComponentText("Linked thermal data.")
+                    );
                 }
 
                 return true;
@@ -55,28 +65,51 @@ public class BThermometer extends BBase {
     }
 
     @Override
-    public boolean onSneakMachineActivated(World par1World, int x, int y, int z,
-            EntityPlayer par5EntityPlayer,
-            int side, float hitX, float hitY,
-            float hitZ) {
+    public boolean onSneakMachineActivated(
+        World par1World,
+        int x,
+        int y,
+        int z,
+        EntityPlayer par5EntityPlayer,
+        int side,
+        float hitX,
+        float hitY,
+        float hitZ
+    ) {
         TThermometer tileEntity = (TThermometer) par1World.getTileEntity(x, y, z);
         tileEntity.setWarningTemp(tileEntity.getWarningTemp() - 10);
         return true;
     }
 
     @Override
-    public boolean onUseWrench(World par1World, int x, int y, int z,
-            EntityPlayer par5EntityPlayer, int side,
-            float hitX, float hitY, float hitZ) {
+    public boolean onUseWrench(
+        World par1World,
+        int x,
+        int y,
+        int z,
+        EntityPlayer par5EntityPlayer,
+        int side,
+        float hitX,
+        float hitY,
+        float hitZ
+    ) {
         TThermometer tileEntity = (TThermometer) par1World.getTileEntity(x, y, z);
         tileEntity.setWarningTemp(tileEntity.getWarningTemp() + 100);
         return true;
     }
 
     @Override
-    public boolean onSneakUseWrench(World par1World, int x, int y, int z,
-            EntityPlayer par5EntityPlayer, int side,
-            float hitX, float hitY, float hitZ) {
+    public boolean onSneakUseWrench(
+        World par1World,
+        int x,
+        int y,
+        int z,
+        EntityPlayer par5EntityPlayer,
+        int side,
+        float hitX,
+        float hitY,
+        float hitZ
+    ) {
         TThermometer tileEntity = (TThermometer) par1World.getTileEntity(x, y, z);
         tileEntity.setWarningTemp(tileEntity.getWarningTemp() + 10);
         return true;
@@ -88,14 +121,14 @@ public class BThermometer extends BBase {
     }
 
     @Override
-    public int isProvidingWeakPower(IBlockAccess par1IBlockAccess, int x, int y, int z,
-            int par5) {
+    public int
+    isProvidingWeakPower(IBlockAccess par1IBlockAccess, int x, int y, int z, int par5) {
         return this.isProvidingStrongPower(par1IBlockAccess, x, y, z, par5);
     }
 
     @Override
-    public int isProvidingStrongPower(IBlockAccess par1IBlockAccess, int x, int y, int z,
-            int par5) {
+    public int
+    isProvidingStrongPower(IBlockAccess par1IBlockAccess, int x, int y, int z, int par5) {
         TThermometer tileEntity = (TThermometer) par1IBlockAccess.getTileEntity(x, y, z);
         return tileEntity.shouldEmitRedstone() ? 15 : 0;
     }

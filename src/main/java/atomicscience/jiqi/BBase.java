@@ -27,8 +27,8 @@ public class BBase extends BlockAdvanced {
     @Override
     @SideOnly(Side.CLIENT)
     public void registerBlockIcons(IIconRegister iconRegister) {
-        if (this.getRenderType() == 0 &&
-                this.textureName.equals("atomicscience:machine")) {
+        if (this.getRenderType() == 0
+            && this.textureName.equals("atomicscience:machine")) {
             super.registerBlockIcons(iconRegister);
         } else {
             this.blockIcon = iconRegister.registerIcon(this.textureName);

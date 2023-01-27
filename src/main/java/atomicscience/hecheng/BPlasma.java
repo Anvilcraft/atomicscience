@@ -1,10 +1,11 @@
 package atomicscience.hecheng;
 
+import java.util.Random;
+
 import atomicscience.api.IElectromagnet;
 import atomicscience.api.Plasma;
 import atomicscience.hecheng.TElectromagnetBoiler;
 import atomicscience.jiqi.BBase;
-import java.util.Random;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
@@ -42,8 +43,12 @@ public class BPlasma extends BBase implements Plasma.IPlasma {
                 if ((double) worldObj.rand.nextFloat() <= 0.8D) {
                     Vector3 zhaoDiDian = diDian.clone();
                     zhaoDiDian.modifyPositionFromSide(ForgeDirection.getOrientation(i));
-                    if (this.canPlace(worldObj, zhaoDiDian.intX(), zhaoDiDian.intY(),
-                            zhaoDiDian.intZ())) {
+                    if (this.canPlace(
+                            worldObj,
+                            zhaoDiDian.intX(),
+                            zhaoDiDian.intY(),
+                            zhaoDiDian.intZ()
+                        )) {
                         Block tileEntity = zhaoDiDian.getBlock(worldObj);
                         if (tileEntity != this) {
                             zhaoDiDian.setBlock(worldObj, this, xinMeta);
@@ -52,36 +57,46 @@ public class BPlasma extends BBase implements Plasma.IPlasma {
                         TileEntity var10 = zhaoDiDian.getTileEntity(worldObj);
                         if (var10 instanceof TElectromagnetBoiler) {
                             ((TElectromagnetBoiler) var10)
-                                    .setTemperature(((TElectromagnetBoiler) var10).getTemperature() + 100.0F);
+                                .setTemperature(
+                                    ((TElectromagnetBoiler) var10).getTemperature()
+                                    + 100.0F
+                                );
                         }
                     }
                 }
             }
 
             worldObj.scheduleBlockUpdate(
-                    x, y, z, this,
-                    (new Vector3((double) x, (double) y, (double) z))
-                            .getBlockMetadata(worldObj) *
-                            5);
+                x,
+                y,
+                z,
+                this,
+                (new Vector3((double) x, (double) y, (double) z))
+                        .getBlockMetadata(worldObj)
+                    * 5
+            );
         }
     }
 
     @Override
-    public void updateTick(World worldObj, int x, int y, int z,
-            Random par5Random) {
+    public void updateTick(World worldObj, int x, int y, int z, Random par5Random) {
         Vector3 diDian = new Vector3((double) x, (double) y, (double) z);
         diDian.setBlock(worldObj, Blocks.fire);
     }
 
     @Override
-    public void onNeighborBlockChange(World worldObj, int x, int y, int z,
-            Block neighborID) {
+    public void
+    onNeighborBlockChange(World worldObj, int x, int y, int z, Block neighborID) {
         if (neighborID != this && neighborID != Blocks.fire) {
             worldObj.scheduleBlockUpdate(
-                    x, y, z, this,
-                    (new Vector3((double) x, (double) y, (double) z))
-                            .getBlockMetadata(worldObj) *
-                            5);
+                x,
+                y,
+                z,
+                this,
+                (new Vector3((double) x, (double) y, (double) z))
+                        .getBlockMetadata(worldObj)
+                    * 5
+            );
         }
     }
 
@@ -96,9 +111,9 @@ public class BPlasma extends BBase implements Plasma.IPlasma {
     public boolean canPlace(World world, int x, int y, int z) {
         Vector3 position = new Vector3((double) x, (double) y, (double) z);
         Block block = position.getBlock(world);
-        return block == null || block != Blocks.bedrock &&
-                !(block instanceof IElectromagnet) &&
-                block != Blocks.iron_block;
+        return block == null
+            || block != Blocks.bedrock && !(block instanceof IElectromagnet)
+            && block != Blocks.iron_block;
     }
 
     @Override
@@ -112,15 +127,14 @@ public class BPlasma extends BBase implements Plasma.IPlasma {
     }
 
     @Override
-    public boolean isBlockSolid(IBlockAccess par1IBlockAccess, int par2, int par3,
-            int par4, int par5) {
+    public boolean
+    isBlockSolid(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5) {
         return false;
     }
 
     @Override
-    public AxisAlignedBB getCollisionBoundingBoxFromPool(World par1World,
-            int par2, int par3,
-            int par4) {
+    public AxisAlignedBB
+    getCollisionBoundingBoxFromPool(World par1World, int par2, int par3, int par4) {
         return null;
     }
 
@@ -140,8 +154,9 @@ public class BPlasma extends BBase implements Plasma.IPlasma {
     }
 
     @Override
-    public void onEntityCollidedWithBlock(World par1World, int par2, int par3, int par4,
-            Entity par5Entity) {
+    public void onEntityCollidedWithBlock(
+        World par1World, int par2, int par3, int par4, Entity par5Entity
+    ) {
         if (par5Entity instanceof EntityLivingBase) {
             if (par5Entity.isImmuneToFire()) {
                 par5Entity.attackEntityFrom(DamageSource.magic, 1073741823);
@@ -154,8 +169,8 @@ public class BPlasma extends BBase implements Plasma.IPlasma {
     }
 
     @Override
-    public ItemStack getPickBlock(MovingObjectPosition target, World world, int x,
-            int y, int z) {
+    public ItemStack
+    getPickBlock(MovingObjectPosition target, World world, int x, int y, int z) {
         return null;
     }
 }

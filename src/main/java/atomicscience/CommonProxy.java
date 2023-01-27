@@ -17,24 +17,21 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
 public class CommonProxy implements IGuiHandler {
+    public void preInit() {}
 
-    public void preInit() {
-    }
-
-    public void init() {
-    }
+    public void init() {}
 
     public int getArmorIndex(String armor) {
         return 0;
     }
 
-    public Object getClientGuiElement(int ID, EntityPlayer player, World world,
-            int x, int y, int z) {
+    public Object
+    getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
         return null;
     }
 
-    public Object getServerGuiElement(int ID, EntityPlayer player, World world,
-            int x, int y, int z) {
+    public Object
+    getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
         TileEntity tileEntity = world.getTileEntity(x, y, z);
         if (tileEntity != null && ID < CommonProxy.GuiType.values().length) {
             if (tileEntity instanceof TCentrifuge) {
@@ -42,8 +39,9 @@ public class CommonProxy implements IGuiHandler {
             }
 
             if (tileEntity instanceof TChemicalExtractor) {
-                return new CChemicalExtractor(player.inventory,
-                        (TChemicalExtractor) tileEntity);
+                return new CChemicalExtractor(
+                    player.inventory, (TChemicalExtractor) tileEntity
+                );
             }
 
             if (tileEntity instanceof TAccelerator) {

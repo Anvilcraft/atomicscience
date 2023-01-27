@@ -1,8 +1,9 @@
 package atomicscience.jiqi;
 
+import java.util.List;
+
 import atomicscience.api.ITemperature;
 import atomicscience.wujian.ItElectricAS;
-import java.util.List;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -21,17 +22,20 @@ public class ItThermometer extends ItElectricAS {
     }
 
     @Override
-    public void addInformation(ItemStack itemStack, EntityPlayer player,
-            List par3List, boolean par4) {
+    public void addInformation(
+        ItemStack itemStack, EntityPlayer player, List par3List, boolean par4
+    ) {
         super.addInformation(itemStack, player, par3List, par4);
         Vector3 coord = this.getSavedCoord(itemStack);
         TileEntity tileEntity = coord.getTileEntity(player.worldObj);
         if (tileEntity instanceof ITemperature) {
             par3List.add("Tracking Thermal Device:");
-            par3List.add("X: " + coord.intX() + ", Y: " + coord.intY() +
-                    ", Z: " + coord.intZ());
-            par3List.add(Math.round(((ITemperature) tileEntity).getTemperature()) +
-                    " Celsius");
+            par3List.add(
+                "X: " + coord.intX() + ", Y: " + coord.intY() + ", Z: " + coord.intZ()
+            );
+            par3List.add(
+                Math.round(((ITemperature) tileEntity).getTemperature()) + " Celsius"
+            );
         } else {
             par3List.add("§4Invalid Thermal Device.");
         }
@@ -49,16 +53,27 @@ public class ItThermometer extends ItElectricAS {
 
     public Vector3 getSavedCoord(ItemStack par1ItemStack) {
         return par1ItemStack.stackTagCompound == null
-                ? new Vector3()
-                : new Vector3((double) par1ItemStack.stackTagCompound.getInteger("x"),
-                        (double) par1ItemStack.stackTagCompound.getInteger("y"),
-                        (double) par1ItemStack.stackTagCompound.getInteger("z"));
+            ? new Vector3()
+            : new Vector3(
+                (double) par1ItemStack.stackTagCompound.getInteger("x"),
+                (double) par1ItemStack.stackTagCompound.getInteger("y"),
+                (double) par1ItemStack.stackTagCompound.getInteger("z")
+            );
     }
 
     @Override
-    public boolean onItemUse(ItemStack itemStack, EntityPlayer par2EntityPlayer,
-            World par3World, int x, int y, int z, int par7,
-            float par8, float par9, float par10) {
+    public boolean onItemUse(
+        ItemStack itemStack,
+        EntityPlayer par2EntityPlayer,
+        World par3World,
+        int x,
+        int y,
+        int z,
+        int par7,
+        float par8,
+        float par9,
+        float par10
+    ) {
         if (!par3World.isRemote) {
             if (this.getJoules(itemStack) > 0.0D) {
                 TileEntity tileEntity = par3World.getTileEntity(x, y, z);
@@ -66,21 +81,25 @@ public class ItThermometer extends ItElectricAS {
                     if (par2EntityPlayer.isSneaking()) {
                         this.setSavedCoords(itemStack, new Vector3(tileEntity));
                         par2EntityPlayer.addChatComponentMessage(
-                                new ChatComponentText("Tracking Thermal Device."));
+                            new ChatComponentText("Tracking Thermal Device.")
+                        );
                     } else {
                         par2EntityPlayer.addChatComponentMessage(new ChatComponentText(
-                                "Heat: " +
-                                        Math.round(((ITemperature) tileEntity).getTemperature()) +
-                                        " C"));
+                            "Heat: "
+                            + Math.round(((ITemperature) tileEntity).getTemperature())
+                            + " C"
+                        ));
                     }
 
                     this.onProvide(
-                            ElectricityPack.getFromWatts(1000.0D, this.getVoltage(itemStack)),
-                            itemStack);
+                        ElectricityPack.getFromWatts(1000.0D, this.getVoltage(itemStack)),
+                        itemStack
+                    );
                 }
             } else {
                 par2EntityPlayer.addChatComponentMessage(
-                        new ChatComponentText("No Electricity!"));
+                    new ChatComponentText("No Electricity!")
+                );
             }
         }
 

@@ -11,7 +11,6 @@ import universalelectricity.core.UniversalElectricity;
 import universalelectricity.core.electricity.ElectricityPack;
 
 public class TAtomicAssembler extends TInventory {
-
     public final int SMELTING_TICKS = 1200;
     public final float DIAN = 10000.0F;
     public int smeltingTicks = 0;
@@ -51,16 +50,22 @@ public class TAtomicAssembler extends TInventory {
                 }
 
                 if (super.ticks % 10L == 0L) {
-                    this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord,
-                            this.zCoord);
+                    this.worldObj.markBlockForUpdate(
+                        this.xCoord, this.yCoord, this.zCoord
+                    );
                 }
             }
 
             if (this.worldObj.isRemote && this.smeltingTicks > 0) {
                 if (super.ticks % 600L == 0L) {
                     this.worldObj.playSoundEffect(
-                            (double) this.xCoord, (double) this.yCoord, (double) this.zCoord,
-                            SoundManager.ASSEMBLER, 0.7F, 1.0F);
+                        (double) this.xCoord,
+                        (double) this.yCoord,
+                        (double) this.zCoord,
+                        SoundManager.ASSEMBLER,
+                        0.7F,
+                        1.0F
+                    );
                 }
 
                 this.rotationYaw1 += 3.0F;
@@ -71,9 +76,11 @@ public class TAtomicAssembler extends TInventory {
                     var3 = var3.copy();
                     var3.stackSize = 1;
                     if (this.entityItem == null) {
-                        this.entityItem = new EntityItem(this.worldObj, 0.0D, 0.0D, 0.0D, var3);
+                        this.entityItem
+                            = new EntityItem(this.worldObj, 0.0D, 0.0D, 0.0D, var3);
                     } else if (!var3.isItemEqual(this.entityItem.getEntityItem())) {
-                        this.entityItem = new EntityItem(this.worldObj, 0.0D, 0.0D, 0.0D, var3);
+                        this.entityItem
+                            = new EntityItem(this.worldObj, 0.0D, 0.0D, 0.0D, var3);
                     }
 
                     ++this.entityItem.age;
@@ -87,13 +94,12 @@ public class TAtomicAssembler extends TInventory {
     @Override
     public ElectricityPack getRequest() {
         return this.canWork()
-                ? new ElectricityPack(10000.0D / this.getVoltage(), this.getVoltage())
-                : new ElectricityPack();
+            ? new ElectricityPack(10000.0D / this.getVoltage(), this.getVoltage())
+            : new ElectricityPack();
     }
 
     @Override
-    public void onDataPacket(NetworkManager arg0,
-            S35PacketUpdateTileEntity arg1) {
+    public void onDataPacket(NetworkManager arg0, S35PacketUpdateTileEntity arg1) {
         NBTTagCompound nbt = arg1.func_148857_g();
 
         this.smeltingTicks = nbt.getInteger("smeltingTicks");
@@ -107,8 +113,9 @@ public class TAtomicAssembler extends TInventory {
         nbt.setInteger("smeltingTicks", this.smeltingTicks);
         nbt.setInteger("disabledTicks", super.disabledTicks);
 
-        return new S35PacketUpdateTileEntity(this.xCoord, this.yCoord, this.zCoord,
-                this.getBlockMetadata(), nbt);
+        return new S35PacketUpdateTileEntity(
+            this.xCoord, this.yCoord, this.zCoord, this.getBlockMetadata(), nbt
+        );
     }
 
     @Override
@@ -125,7 +132,8 @@ public class TAtomicAssembler extends TInventory {
                     return false;
                 }
 
-                if (super.containingItems[i].getItem() != AtomicScience.itCellStrangeMatter) {
+                if (super.containingItems[i].getItem()
+                    != AtomicScience.itCellStrangeMatter) {
                     return false;
                 }
             }
@@ -141,7 +149,8 @@ public class TAtomicAssembler extends TInventory {
             for (int i = 0; i <= 5; ++i) {
                 if (super.containingItems[i] != null) {
                     super.containingItems[i].setItemDamage(
-                            super.containingItems[i].getItemDamage() + 1);
+                        super.containingItems[i].getItemDamage() + 1
+                    );
                     if (super.containingItems[i].getItemDamage() >= 64) {
                         super.containingItems[i] = null;
                     }
@@ -178,8 +187,7 @@ public class TAtomicAssembler extends TInventory {
 
     @Override
     public boolean isItemValidForSlot(int slotID, ItemStack itemStack) {
-        return slotID == 6
-                ? itemStack.isStackable()
-                : itemStack.getItem() == AtomicScience.itCellStrangeMatter;
+        return slotID == 6 ? itemStack.isStackable()
+                           : itemStack.getItem() == AtomicScience.itCellStrangeMatter;
     }
 }
