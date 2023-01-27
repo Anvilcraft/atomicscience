@@ -15,6 +15,7 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
+import net.minecraftforge.oredict.OreDictionary;
 import universalelectricity.core.electricity.ElectricityPack;
 import universalelectricity.core.item.ElectricItemHelper;
 import universalelectricity.core.item.IItemElectric;
@@ -130,10 +131,7 @@ public class TCentrifuge
 
     public boolean canWork() {
         return !this.isDisabled() && this.gasTank.getFluidAmount() != 0 &&
-                this.gasTank.getFluidAmount() >= AtomicScience.URANIUM_HEXAFLOURIDE_RATIO &&
-                this.isItemValidForSlot(2, new ItemStack(AtomicScience.itUranium)) &&
-                this.isItemValidForSlot(3,
-                        new ItemStack(AtomicScience.itUranium, 1, 1));
+                this.gasTank.getFluidAmount() >= AtomicScience.URANIUM_HEXAFLOURIDE_RATIO;
     }
 
     public void work() {

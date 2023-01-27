@@ -67,10 +67,10 @@ import cpw.mods.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import cpw.mods.fml.common.registry.EntityRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
-
 import java.io.File;
 import java.util.Arrays;
 import java.util.logging.Logger;
+import java.util.stream.Stream;
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Blocks;
@@ -94,6 +94,7 @@ import net.minecraftforge.fluids.FluidContainerRegistry.FluidContainerData;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
+import org.apache.commons.lang3.ArrayUtils;
 import universalelectricity.core.item.ItemElectric;
 import universalelectricity.core.vector.Vector3;
 import universalelectricity.prefab.TranslationHelper;
@@ -108,8 +109,8 @@ import universalelectricity.prefab.ore.OreGenerator;
 @Mod(modid = "AtomicScience", name = "Atomic Science", version = "1.1.0",
      dependencies = "required-after:basiccomponents")
 public class AtomicScience {
-  public static Configuration CONFIGURATION =
-      new Configuration(new File(Loader.instance().getConfigDir(), "AtomicScience.cfg"));
+  public static Configuration CONFIGURATION = new Configuration(
+      new File(Loader.instance().getConfigDir(), "AtomicScience.cfg"));
   public static final String ID = "AtomicScience";
   public static final String CHANNEL = "AtomicScience";
   public static final String PREFIX = "atomicscience:";
@@ -175,7 +176,8 @@ public class AtomicScience {
   public static OreGenBase uraniumOreGeneration;
   public static int URANIUM_HEXAFLOURIDE_RATIO = 200;
   public static int STEAM_RATIO = 120;
-  public static final String QIZI_FAN_WU_SU_BAO_ZHA = FlagRegistry.registerFlag("ban_antimatter_power");
+  public static final String QIZI_FAN_WU_SU_BAO_ZHA =
+      FlagRegistry.registerFlag("ban_antimatter_power");
   public static final Logger LOGGER = Logger.getLogger("AtomicScience");
 
   public static SimpleNetworkWrapper channel;
@@ -213,8 +215,11 @@ public class AtomicScience {
     STEAM_RATIO =
         AtomicScience.CONFIGURATION.get("general", "Steam Ratio", STEAM_RATIO)
             .getInt(STEAM_RATIO);
-    REQUIRE_TRITIUM = AtomicScience.CONFIGURATION.get("general", "Require Tritium", REQUIRE_TRITIUM).getBoolean(REQUIRE_TRITIUM);
-    PotionRadiation.INSTANCE = new PotionRadiation(21, true, 5149489, "radiation");
+    REQUIRE_TRITIUM = AtomicScience.CONFIGURATION
+                          .get("general", "Require Tritium", REQUIRE_TRITIUM)
+                          .getBoolean(REQUIRE_TRITIUM);
+    PotionRadiation.INSTANCE =
+        new PotionRadiation(21, true, 5149489, "radiation");
     blockRadioactive = (new BlockRadioactive()
                             .setBlockName("atomicscience:radioactive")
                             .setCreativeTab(TabAS.INSTANCE));
@@ -227,7 +232,7 @@ public class AtomicScience {
     bThermometer = new BThermometer();
     bFusionReactor = new BFusionReactor();
     bPlasma = new BPlasma();
-    bElectromagnet= new BElectromagnet();
+    bElectromagnet = new BElectromagnet();
     bElectromagnetBoiler = new BElectromagnetBoiler();
     bChemicalExtractor = new BChemicalExtractor();
     bSiren = new BSiren();
@@ -256,7 +261,7 @@ public class AtomicScience {
     itCell = new ItCell("cellEmpty");
     itCellUranium = new ItFissileFuel();
     itCellDeuterium = new ItCell("cellDeuterium");
-    itCellTritium =new ItCell("cellTritium");
+    itCellTritium = new ItCell("cellTritium");
     itCellStrangeMatter = new ItStrangeMatter();
     itCellAntimatter = new ItAntimatterCell();
     itCellWater = new ItCell("cellWater");
@@ -308,8 +313,10 @@ public class AtomicScience {
     GameRegistry.registerBlock(bThermometer, "bThermometer");
     GameRegistry.registerBlock(bFusionReactor, "bFusionReactor");
     GameRegistry.registerBlock(bPlasma, IBPlasma.class, "bPlasma");
-    GameRegistry.registerBlock(bElectromagnet, IBElectromagnet.class, "bElectromagnet");
-    GameRegistry.registerBlock(bElectromagnetBoiler, IBElectromagnet.class, "bElectromagnetBoiler");
+    GameRegistry.registerBlock(bElectromagnet, IBElectromagnet.class,
+                               "bElectromagnet");
+    GameRegistry.registerBlock(bElectromagnetBoiler, IBElectromagnet.class,
+                               "bElectromagnetBoiler");
     GameRegistry.registerBlock(bChemicalExtractor, "bChemicalExtractor");
     GameRegistry.registerBlock(bSiren, IBSiren.class, "bSiren");
     GameRegistry.registerBlock(bElectromagnetGlass, "bElectromagnetGlass");
@@ -375,7 +382,8 @@ public class AtomicScience {
     GameRegistry.registerTileEntity(TTurbine.class, "ASTurbine");
     GameRegistry.registerTileEntity(TNuclearBoiler.class, "ASNuclearBoiler");
     GameRegistry.registerTileEntity(TThermometer.class, "ASThermometer");
-    GameRegistry.registerTileEntity(TElectromagnetBoiler.class, "ASElectromagnetBoiler");
+    GameRegistry.registerTileEntity(TElectromagnetBoiler.class,
+                                    "ASElectromagnetBoiler");
     GameRegistry.registerTileEntity(TChemicalExtractor.class,
                                     "ASChemicalExtractor");
     GameRegistry.registerTileEntity(TFunnel.class, "ASFunnel");
@@ -403,7 +411,8 @@ public class AtomicScience {
     metadata.url = "https://git.tilera.org/Anvilcraft/atomicscience";
     metadata.logoFile = "/as_logo.png";
     metadata.version = "1.1.0";
-    metadata.authorList = Arrays.asList(new String[] {"Calclavia", "LordMZTE", "tilera"});
+    metadata.authorList =
+        Arrays.asList(new String[] {"Calclavia", "LordMZTE", "tilera"});
     metadata.credits = "Please visit the website.";
     metadata.logoFile = "as_logo.png";
     metadata.autogenerated = false;
@@ -475,16 +484,10 @@ public class AtomicScience {
 
   public static boolean is(ItemStack itemStack, String... names) {
     if (itemStack != null && names != null && names.length > 0) {
-      String name = OreDictionary.getOreName(OreDictionary.getOreID(itemStack));
-      String[] arr$ = names;
-      int len$ = names.length;
-
-      for (int i$ = 0; i$ < len$; ++i$) {
-        String compareName = arr$[i$];
-        if (name.equals(compareName)) {
-          return true;
-        }
-      }
+      int[] ids = OreDictionary.getOreIDs(itemStack);
+      return Stream.of(names)
+          .mapToInt(OreDictionary::getOreID)
+          .anyMatch(id -> ArrayUtils.contains(ids, id));
     }
 
     return false;
@@ -531,16 +534,19 @@ public class AtomicScience {
     }
   }
 
-  @EventHandler 
+  @EventHandler
   public void serverStarting(FMLServerStartingEvent event) {
-    FlagRegistry.registerModFlag("ModFlags", new ModFlag(NBTFileLoader.loadData("ModFlags")));
-    event.registerServerCommand(new CommandFlag(FlagRegistry.getModFlag("ModFlags")));
+    FlagRegistry.registerModFlag(
+        "ModFlags", new ModFlag(NBTFileLoader.loadData("ModFlags")));
+    event.registerServerCommand(
+        new CommandFlag(FlagRegistry.getModFlag("ModFlags")));
   }
 
   @EventHandler
   public void worldSave(Save evt) {
     if (!evt.world.isRemote) {
-      NBTFileLoader.saveData("ModFlags", FlagRegistry.getModFlag("ModFlags").getNBT());
+      NBTFileLoader.saveData("ModFlags",
+                             FlagRegistry.getModFlag("ModFlags").getNBT());
     }
   }
 

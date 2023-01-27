@@ -105,7 +105,7 @@ public abstract class TInventory
         if (this.getStackInSlot(slot) == null) {
             this.setInventorySlotContents(slot, itemStack.copy());
         } else if (this.getStackInSlot(slot).isItemEqual(itemStack)) {
-            ++this.getStackInSlot(slot).stackSize;
+            this.getStackInSlot(slot).stackSize += itemStack.stackSize;
         }
     }
 

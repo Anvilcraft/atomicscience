@@ -69,7 +69,7 @@ public class CChemicalExtractor extends Container {
                     if (!this.mergeItemStack(itemStack, 0, 1, false)) {
                         return null;
                     }
-                } else if (FluidRegistry.WATER == FluidContainerRegistry.getFluidForFilledItem(itemStack)
+                } else if (FluidContainerRegistry.getFluidForFilledItem(itemStack) != null && FluidRegistry.WATER == FluidContainerRegistry.getFluidForFilledItem(itemStack)
                         .getFluid()) {
                     if (!this.mergeItemStack(itemStack, 1, 2, false)) {
                         return null;

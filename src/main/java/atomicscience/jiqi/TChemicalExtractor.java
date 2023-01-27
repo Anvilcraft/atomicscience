@@ -209,6 +209,16 @@ public class TChemicalExtractor
 
    @Override
     public boolean isItemValidForSlot(int slotID, ItemStack itemStack) {
+        if (slotID == 2) {
+            if (this.getStackInSlot(2) == null)
+                return true;
+
+            if (!this.getStackInSlot(2).isItemEqual(itemStack))
+                return false;
+            
+            return this.getStackInSlot(2).stackSize + itemStack.stackSize <= itemStack.getMaxStackSize();
+        }
+
         return slotID == 1
                 ? AtomicScience.isCellWater(itemStack)
                 : (slotID != 3 ? false
