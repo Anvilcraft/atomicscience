@@ -79,7 +79,7 @@ public class CNuclearBoiler extends Container {
                     if (!this.mergeItemStack(itemStack, 0, 1, false)) {
                         return null;
                     }
-                } else if (FluidContainerRegistry.isContainer(itemStack) &&
+                } else if (FluidContainerRegistry.isContainer(itemStack) && FluidContainerRegistry.getFluidForFilledItem(itemStack) != null &&
                    FluidRegistry.WATER ==
                        FluidContainerRegistry.getFluidForFilledItem(itemStack)
                            .getFluid()) {
