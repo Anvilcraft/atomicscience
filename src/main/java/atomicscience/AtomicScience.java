@@ -369,7 +369,7 @@ public class AtomicScience {
         AtomicScience.CONFIGURATION.save();
         MinecraftForge.EVENT_BUS.register(itCellAntimatter);
         MinecraftForge.EVENT_BUS.register(FulminationEventHandler.INSTANCE);
-        OreDictionary.registerOre("breederUranium", itUranium);
+        OreDictionary.registerOre("breederUranium", new ItemStack(itUranium, 1, 1));
         OreDictionary.registerOre("blockRadioactive", blockRadioactive);
         OreDictionary.registerOre("cellEmpty", itCell);
         OreDictionary.registerOre("cellUranium", itCellUranium);
